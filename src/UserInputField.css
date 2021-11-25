@@ -1,0 +1,10 @@
+.UserInputField {
+    font-size: 60px;
+    text-align: center;
+}
+
+.UserInputField-input {
+    width: 200px;
+    height: 80px;
+    border-radius: 5px;
+}

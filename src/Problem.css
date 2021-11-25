@@ -1,0 +1,29 @@
+.Problem {
+    width: 60%;
+    min-width: 300px;
+    max-width: 600px;
+
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    font-size: 50px;
+
+    padding: 40px 10px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 5px darkgrey;
+}
+
+.Problem-main {
+    height: 200px;
+}
+
+.Problem-buttons {
+    height: 50px;
+    display: flex;
+    gap: 20px;
+    
+}
