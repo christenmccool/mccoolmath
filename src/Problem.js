@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getProblemFromAPI, 
         postUserAnswerToAPI, 
         getCorrectAnswerFromAPI, 
-        tryAgain } from './actions/problem';
+        tryAgain } from './actions/actions';
 import Expression from './Expression.js';
 import UserInputForm from './UserInputForm.js';
 import Message from './Message.js';

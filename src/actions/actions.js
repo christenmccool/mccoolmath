@@ -1,4 +1,4 @@
-import { GET_PROBLEM, POST_USER_ANSWER, GET_CORRECT_ANSWER, TRY_AGAIN } from '../actionTypes/problem';
+import { GET_PROBLEM, POST_USER_ANSWER, GET_CORRECT_ANSWER, TRY_AGAIN } from './actionTypes';
 import axios from 'axios';
 
 const BASE_URL = "http://localhost:3000/integerop/";
