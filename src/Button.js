@@ -9,15 +9,15 @@ const Button = ( {role, handleClick=null, refToAccess=null} ) => {
         "tryAgain" : "Try Again"
     }
     const buttonClass = {
-        "check" : "Button-btn Button-btn-check",
-        "newProblem" : "Button-btn Button-btn-other",
-        "getAnswer" : "Button-btn Button-btn-other",
-        "tryAgain" : "Button-btn Button-btn-other"
+        "check" : "check",
+        "newProblem" : "other",
+        "getAnswer" : "other",
+        "tryAgain" : "other"
     }
 
     return (
         <div className="Button">
-            <button className={buttonClass[role]} onClick={handleClick} ref={refToAccess}>
+            <button className={`Button-btn Button-btn-${buttonClass[role]}`} onClick={handleClick} ref={refToAccess}>
                 {buttonText[role]}
             </button>
         </div>

@@ -9,6 +9,7 @@ import UserInputForm from './UserInputForm.js';
 import Message from './Message.js';
 import Button from './Button.js';
 import './Problem.css';
+import { getRoles } from '@testing-library/dom';
 
 
 const Problem = () => {
@@ -22,7 +23,7 @@ const Problem = () => {
     useEffect(() => {
         if (problem.latex) return;
         dispatch(getProblemFromAPI());
-    }, [dispatch]);
+    }, [problem.latex, dispatch]);
 
     useEffect(() => {
         if (!problem.status) {
@@ -48,10 +49,59 @@ const Problem = () => {
         dispatch(tryAgain());
     }
 
+    const buttonRole = () => {
+        switch (problem.status) {
+            case null:
+            case "incorrect":
+                return "getAnswer";
+            case "correct":
+            case "showCorrect":
+                return "newProblem";
+        }
+    }
+
+    const buttonRef = () => {
+        switch (problem.status) {
+            case "correct":
+            case "showCorrect":
+                return newProbBtnRef;
+            default:
+                return null;
+        }
+    }
+
+    const handleButtonClick = () => {
+        switch (problem.status) {
+            case null:
+            case "incorrect":
+                return getCorrectAnswer;
+            case "correct":
+            case "showCorrect":
+                return getProblem;
+        }
+    }
+
+    // const renderButtons = () => {
+    //     switch (problem.status) {
+    //         case null:
+    //             return <Button role="getAnswer" handleClick={getCorrectAnswer} />
+    //         case "incorrect":
+    //             return (<>
+    //                 <Button role="getAnswer" handleClick={getCorrectAnswer} />
+    //                 <Button role="tryAgain" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
+    //             </>)
+    //         case "correct":
+    //             return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
+    //         case "showCorrect":
+    //             return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
+    //     }
+    // }
+
     return (
         <div className="Problem">
-            <Expression latex={problem.latex} />
             <div className="Problem-main">
+                <Expression latex={problem.latex} />
+
                 {problem.status===null ?
                     <UserInputForm submitUserAnswer={submitUserAnswer} inputFieldRef={inputFieldRef}/> 
                     :
@@ -59,18 +109,11 @@ const Problem = () => {
                 }
             </div>
             <div className="Problem-buttons">
-                {problem.status===null ?
-                    <>
-                        <Button role="getAnswer" handleClick={getCorrectAnswer} />
-                    </>
-                    :
-                    problem.status==='incorrect' ?
-                        <>
-                            <Button role="tryAgain" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
-                            <Button role="getAnswer" handleClick={getCorrectAnswer} />
-                        </>
-                        :
-                        <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
+                <Button role={buttonRole()} refToAccess={buttonRef()} handleClick={handleButtonClick()} />
+                                                       
+                {problem.status === 'incorrect' ? 
+                    <Button role="tryAgain" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
+                    : null
                 }
             </div>
         </div>

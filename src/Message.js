@@ -6,23 +6,22 @@ import './Message.css'
 const Message = () => {
     const problem = useSelector(state => state.problem);
 
+    const latexToDisplay = () => {
+        if (problem.status==='showCorrect') {
+            return problem.correctAnswer;
+        }
+        return problem.userAnswer;
+    }
+
+    const messageText = () => {
+        return problem.status==='correct' ? "Correct!" : "Incorrect";
+    }
+
     return (
         <div className="Message">
-            {problem.status==='showCorrect' ? 
-                <>
-                    <Expression latex={problem.correctAnswer} />
-                </>
-                : 
-                problem.status==='correct' ? 
-                    <>
-                        <Expression latex={problem.userAnswer} />
-                        <h1 className="Message-text Message-text-correct">Correct!</h1>
-                    </>
-                    : 
-                    <>
-                        <Expression latex={problem.userAnswer} />  
-                        <h1 className="Message-text Message-text-incorrect">Incorrect</h1>
-                    </>
+            <Expression latex={latexToDisplay()} />
+            {problem.status!=='showCorrect' ? 
+                <h1 className={`Message-text Message-text-${problem.status}`}>{messageText()}</h1> : null
             }
         </div>
     )

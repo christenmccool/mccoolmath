@@ -13,7 +13,7 @@ function getProblemFromAPI() {
 function getProblem(problem) {
     return { 
         type: GET_PROBLEM,
-        latex: problem.exp,
+        latex: problem.latex,
         problemType: problem.problemType,
         args: problem.args
     };
