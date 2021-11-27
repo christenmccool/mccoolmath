@@ -1,10 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import Expression from './Expression';
 import './Message.css'
 
-const Message = () => {
-    const problem = useSelector(state => state.problem);
+const Message = ({ problem }) => {
+    // const problem = useSelector(state => state.problem);
 
     const latexToDisplay = () => {
         if (problem.status==='showCorrect') {

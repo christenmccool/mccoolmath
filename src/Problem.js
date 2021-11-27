@@ -1,20 +1,26 @@
-import React, {useEffect, useRef} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getProblemFromAPI, 
-        postUserAnswerToAPI, 
-        getCorrectAnswerFromAPI, 
-        tryAgain } from './actions/actions';
+import React, {useState, useEffect, useRef} from 'react';
+import axios from 'axios';
 import Expression from './Expression.js';
 import UserInputForm from './UserInputForm.js';
 import Message from './Message.js';
 import Button from './Button.js';
 import './Problem.css';
-import { getRoles } from '@testing-library/dom';
 
+const BASE_URL = "http://localhost:3000/integerop/";
 
 const Problem = () => {
-    const problem = useSelector(state => state.problem);
-    const dispatch = useDispatch();
+
+    const INITIAL_STATE = {
+        latex: null, 
+        problemType: null, 
+        args: null,
+        userAnswer: null,
+        correctAnswer: null, 
+        status: null,
+        previousUserAnswers: []
+    }
+
+    const [problem, setProblem] = useState(INITIAL_STATE);
 
     const newProbBtnRef = useRef();
     const tryAgainBtnRef = useRef();
@@ -22,31 +28,66 @@ const Problem = () => {
 
     useEffect(() => {
         if (problem.latex) return;
-        dispatch(getProblemFromAPI());
-    }, [problem.latex, dispatch]);
+        axios.get(BASE_URL)
+        .then(resp => setProblem({...problem, ...resp.data}))
+        .catch(err => console.log(err));
+    }, [problem]);
 
     useEffect(() => {
         if (!problem.status) {
             inputFieldRef.current.children[0].children[0].children[0].focus();
+        } else if (problem.status === 'incorrect') {
+            tryAgainBtnRef.current.focus();
+        } else if (problem.status === 'correct' || problem.status === 'showCorrect') {
+            newProbBtnRef.current.focus();
         }
-        if (problem.status === 'incorrect') tryAgainBtnRef.current.focus();
-        if (problem.status === 'correct' || problem.status === 'showCorrect') newProbBtnRef.current.focus();
     }, [problem.status])
 
     const getProblem = () => {
-        dispatch(getProblemFromAPI());
+        setProblem(INITIAL_STATE);
+        // axios.get(BASE_URL)
+        // .then(resp => setProblem(resp.data))
+        // .catch(err => console.log(err));
     }
 
     const submitUserAnswer = (userAnswer) => {
-        dispatch(postUserAnswerToAPI(problem.problemType, problem.args, userAnswer));
+        axios.post(BASE_URL, {   
+            probType: problem.problemType,
+            args: problem.args,
+            answer: userAnswer,
+        })
+        .then(resp => setProblem(
+            {...problem, 
+                ...resp.data, 
+                userAnswer,
+                previousUserAnswers:[...problem.previousUserAnswers, userAnswer]
+            }
+        ))
+        .catch(err => console.log(err));
     }
 
     const getCorrectAnswer = () => {
-        dispatch(getCorrectAnswerFromAPI(problem.problemType, problem.args));
+        axios.post(BASE_URL, {   
+            probType: problem.problemType,
+            args: problem.args,
+            answer: null,
+            returnAnswer: true
+        })
+        .then(resp => setProblem(
+            {...problem, 
+                ...resp.data, 
+                userAnswer: null, 
+                status: 'showCorrect'
+            }
+        ))
+        .catch(err => console.log(err));
     }
 
     const handleTryAgain = () => {
-        dispatch(tryAgain());
+        setProblem({...problem, 
+            status: null,
+            userAnswer: null        
+        });
     }
 
     const buttonRole = () => {
@@ -81,22 +122,6 @@ const Problem = () => {
         }
     }
 
-    // const renderButtons = () => {
-    //     switch (problem.status) {
-    //         case null:
-    //             return <Button role="getAnswer" handleClick={getCorrectAnswer} />
-    //         case "incorrect":
-    //             return (<>
-    //                 <Button role="getAnswer" handleClick={getCorrectAnswer} />
-    //                 <Button role="tryAgain" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
-    //             </>)
-    //         case "correct":
-    //             return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
-    //         case "showCorrect":
-    //             return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
-    //     }
-    // }
-
     return (
         <div className="Problem">
             <div className="Problem-main">
@@ -105,7 +130,7 @@ const Problem = () => {
                 {problem.status===null ?
                     <UserInputForm submitUserAnswer={submitUserAnswer} inputFieldRef={inputFieldRef}/> 
                     :
-                    <Message />
+                    <Message problem={problem}/>
                 }
             </div>
             <div className="Problem-buttons">
