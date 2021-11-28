@@ -1,0 +1,11 @@
+.Options {    
+    width: 70%;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 0px auto 10px auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+

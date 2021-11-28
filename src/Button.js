@@ -6,7 +6,7 @@ const Button = ( {role, handleClick=null, refToAccess=null} ) => {
         "check" : "Check",
         "newProblem" : "Next",
         "getAnswer" : "Show Answer", 
-        "tryAgain" : "Try Again"
+        "tryAgain" : "Try Again",
     }
     const buttonClass = {
         "check" : "check",

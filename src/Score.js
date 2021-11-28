@@ -1,17 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import './Score.css';
 
-const Score = () => {
-    const scores = useSelector(state => state.scores);
+const Score = ({ score }) => {
 
     return (
         <div className="Score">
             <div>
-                Correct: {scores.totalCorrect}
+                Correct: {score.correct}
             </div>
             <div>
-                Attempts: {scores.totalAttempts}
+                Attempts: {score.attempts}
             </div>
         </div>
     )

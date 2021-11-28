@@ -8,7 +8,7 @@ const Message = ({ problem }) => {
 
     const latexToDisplay = () => {
         if (problem.status==='showCorrect') {
-            return problem.correctAnswer;
+            return problem.correctAnswer.toString();
         }
         return problem.userAnswer;
     }

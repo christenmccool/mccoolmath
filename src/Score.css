@@ -2,12 +2,10 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    width: 40%;
+    gap: 30px;
+    /* width: 40%;
     min-width: 150px;
-    max-width: 300px;
-    margin: 0px auto;
-    padding: 5px 10px;
-    border-radius: 8px;
+    max-width: 300px; */
     font-size: 25px;
     color: #2B7C85;
 }
