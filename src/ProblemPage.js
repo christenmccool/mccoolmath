@@ -8,7 +8,6 @@ import Timer from './Timer';
 import './ProblemPage.css';
 
 const ProblemPage = () => {
-
     const {skill} = useParams();
 
     const INITIAL_STATE = {
@@ -20,30 +19,11 @@ const ProblemPage = () => {
         status: null,
         previousUserAnswers: []
     }
-    const options = () => {
-        switch (skill) {
-            case "integers":
-                // return {choices: [
-                //             {choice:'add', text:'Add', params: ['type=add']},
-                //             {choice:'sub', text:'Subtract', params: ['type=sub']},
-                //             {choice:'mult', text:'Multiply', params: ['type=mult']},
-                //             {choice:'div', text:'Divide', params: ['type=div']},
-                //             {choice:'all', text:'All', params: ['type=all']}
-                // ], default:'all'}
-                return {param: "type",
-                        choices: {'add': 'Add', 'sub': 'Subtract', 'mult': 'Multiply', 'div': 'Divide', 'all': 'All'}, 
-                        default:'all'}
-            case "orderofops":
-                return {param: "n", choices: {'3': 'Easy', '4':'Medium', '5':'Hard'}, default: '3'};
-            default: 
-                return null
-        }
-    }
+
     const [problem, setProblem] = useState(INITIAL_STATE);
     const [score, setScore] = useState({correct: 0, attempts: 0});
     const [time, setTime] = useState(0);
     const [runTimer, setRunTimer] = useState(false);
-    const [option, setOption] = useState({param: options().param, value: options().default});
 
     const countdownTime = () => {
         return 5 - Math.round(time / 1000);
@@ -52,13 +32,8 @@ const ProblemPage = () => {
     return (
         <div className="ProblemPage">
             <div className="ProblemPage-main">
-                <Options 
-                    options={options()}
-                    option={option}
-                    setOption={setOption}
-                />
+                <Options />
                 <Problem 
-                    option={option}
                     INITIAL_STATE={INITIAL_STATE}
                     problem={problem}
                     setProblem={setProblem}

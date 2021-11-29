@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Expression from './Expression';
 import UserInputForm from './UserInputForm';
@@ -10,8 +9,10 @@ import './Problem.css';
 
 const API_BASE_URL = "http://localhost:3000";
 
-const Problem = ({ option, INITIAL_STATE, problem, setProblem, setScore }) => {
+const Problem = ({ INITIAL_STATE, problem, setProblem, setScore }) => {
     const {skill} = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchParamsStr = searchParams.toString();
 
     const API_URL = `${API_BASE_URL}/${skill}`;
     let navigate = useNavigate();
@@ -22,18 +23,18 @@ const Problem = ({ option, INITIAL_STATE, problem, setProblem, setScore }) => {
 
     useEffect(()=> {
         setProblem(INITIAL_STATE);
-    }, [option])
+    }, [searchParams])
 
     useEffect(() => {
         if (problem.latex) return;
-        const url = option ? `${API_URL}?${option.param}=${option.value}` : API_URL;
+        const url = `${API_URL}?${searchParamsStr}`;
         axios.get(url)
         .then(resp => setProblem({...problem, ...resp.data}))
         .catch(err => {
             console.log(err);
             navigate("/");
         });
-    }, [option, problem, API_URL, navigate]);
+    }, [problem, searchParamsStr, API_URL, navigate]);
 
     useEffect(() => {
         if (!problem.status) {
