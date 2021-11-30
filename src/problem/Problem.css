@@ -1,7 +1,5 @@
 .Problem {
-    width: 60%;
-    min-width: 300px;
-    max-width: 600px;
+    width: 95%;
     margin: 0px auto;
     display: flex;
     flex-direction: column;

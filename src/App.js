@@ -1,7 +1,7 @@
-import NavBar from './NavBar';
 import { Routes, Route } from 'react-router-dom';
-import Menu from './Menu';
-import ProblemPage from './ProblemPage';
+import NavBar from './app/NavBar';
+import Menu from './app/Menu';
+import ProblemPage from './app/ProblemPage';
 import './App.css';
 
 function App() {

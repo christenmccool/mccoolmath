@@ -1,0 +1,30 @@
+.GoalForm {    
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.GoalForm-radio-inputs {    
+    display: flex;
+    flex-direction: column;
+}
+
+.GoalForm input {    
+    height: 15px;
+}
+
+.GoalForm select {    
+    font-size: 35px;
+}
+
+.GoalForm-icons {    
+    font-size: 25px;
+    color: darkslategrey;
+    display: flex;
+    justify-content: end;
+    align-self: end;
+    gap: 8px;
+    padding: 0px 0px 0px 40px;
+}
+

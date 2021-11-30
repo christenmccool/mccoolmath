@@ -1,0 +1,11 @@
+.Timer {
+    font-size: 30px;
+}
+
+@media (min-width: 1024px) {
+    .Timer {
+        border: 1px solid #91D34C;
+        padding: 2px 5px;
+        border-radius: 5px;
+    }    
+}

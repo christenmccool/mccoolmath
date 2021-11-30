@@ -1,0 +1,18 @@
+.GoalWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+    gap: 30px;
+    width: 100%;
+}
+
+.GoalWrapper-goal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    color: slategray;
+}
+
+
