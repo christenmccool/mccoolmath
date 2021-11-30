@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
-// import Score from './Score';
 import Goal from './Goal';
-// import Timer from './Timer';
 import GoalForm from './GoalForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import './GoalWrapper.css';
 
-const GoalWrapper = ({ initialTime, setInitialTime, timerType, setTimerType }) => {
+const GoalWrapper = ({ timer, setTimer }) => {
     const [numProb, setNumProb] = useState(25);
     const [editGoal, setEditGoal] = useState(false);
 
@@ -22,10 +20,8 @@ const GoalWrapper = ({ initialTime, setInitialTime, timerType, setTimerType }) =
                 <GoalForm 
                     numProb={numProb}
                     setNumProb={setNumProb}
-                    timerType={timerType}
-                    setTimerType={setTimerType}
-                    initialTime={initialTime}
-                    setInitialTime={setInitialTime}
+                    timer={timer}
+                    setTimer={setTimer}
                     toggleEditGoal={toggleEditGoal}
                 />
             </>

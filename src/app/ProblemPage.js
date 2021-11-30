@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useReducer } from 'react';
+import reducer from '../reducers/timer';
+
 import Options from '../options/Options';
 import Problem from '../problem/Problem';
 import Timer from '../timer/Timer';
@@ -10,7 +11,14 @@ import GoalWrapper from '../goal/GoalWrapper';
 import './ProblemPage.css';
 
 const ProblemPage = () => {
-    const {skill} = useParams();
+
+    const INITIAL_TIMER_STATE = {
+        initialTime: 0,
+        timerType: 'count-up',
+        time: 0,
+        warningTime: 5,
+        runTimer: false
+    }
 
     const INITIAL_PROB_STATE = {
         latex: null, 
@@ -22,15 +30,11 @@ const ProblemPage = () => {
         previousUserAnswers: []
     }
 
-
-
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
     const [score, setScore] = useState({correct: 0, attempts: 0});
-    const [initialTime, setInitialTime] = useState(0);
-    const [timerType, setTimerType] = useState('count-up');
-    const [time, setTime] = useState(0);
-    const [warningTime, setWarningTime] = useState(5);
-    const [runTimer, setRunTimer] = useState(false);
+    const [timer, setTimer] = useState(INITIAL_TIMER_STATE);
+
+    const [timerState, timerDispatch] = useReducer(reducer, INITIAL_TIMER_STATE);
 
     return (
         <div className="ProblemPage">
@@ -42,25 +46,19 @@ const ProblemPage = () => {
                     setProblem={setProblem}
                     setScore={setScore} 
                 />
-                {(runTimer && warningTime>=0) || (!runTimer && warningTime !== 5 && warningTime >= 0) ?
+                {(timer.runTimer && (timer.warningTime > 0 || timer.warningTime === 0 && timer.time===timer.initialTime)) || (!timer.runTimer && timer.warningTime !== 5 && timer.warningTime >= 0) ?
                     <div className="ProblemPage-warning">
                         <WarningTimer
-                            time={warningTime}
+                            time={timer.warningTime}
                         />
                     </div>
                 : null}
                 <div className="ProblemPage-timer">
                     <Timer 
-                        initialTime={initialTime}
-                        setInitialTime={setInitialTime}
-                        timerType={timerType}
-                        setTimerType={setTimerType}
-                        time={time}
-                        setTime={setTime}
-                        warningTime={warningTime}
-                        setWarningTime={setWarningTime}
-                        runTimer={runTimer}
-                        setRunTimer={setRunTimer}
+                        timerState ={timerState}
+                        timerDispatch = {timerDispatch}
+                        timer={timer}
+                        setTimer={setTimer}
                     />
                 </div>
             </div>
@@ -69,21 +67,16 @@ const ProblemPage = () => {
                     score={score}
                 />    
                 <TimerButton 
-                    initialTime={initialTime}
-                    setInitialTime={setInitialTime}
-                    setTimerType={setTimerType}
-                    time={time}
-                    setTime={setTime}
-                    warningTime={warningTime}
-                    setWarningTime={setWarningTime}
-                    runTimer={runTimer}
-                    setRunTimer={setRunTimer}
+                    timerState ={timerState}
+                    timerDispatch = {timerDispatch}
+                    timer={timer}
+                    setTimer={setTimer}
                 />
                 <GoalWrapper 
-                    initialTime={initialTime}
-                    setInitialTime={setInitialTime}
-                    timerType={timerType}
-                    setTimerType={setTimerType}
+                    timerState ={timerState}
+                    timerDispatch = {timerDispatch}
+                    timer={timer}
+                    setTimer={setTimer}
                 />
             </div>
         </div>

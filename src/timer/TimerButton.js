@@ -1,12 +1,12 @@
 import React from 'react';
 import './TimerButton.css';
 
-const TimerButton = ({ initialTime, warningTime, setWarningTime, time, setTime, runTimer, setRunTimer }) => {
+const TimerButton = ({timerState, timerDispatch, timer, setTimer}) => {
 
     const buttonText = () => {
-        if (runTimer===true) {
+        if (timer.runTimer===true) {
             return "Stop";
-        } else if (runTimer===false && time===initialTime && warningTime===5) {
+        } else if (timer.runTimer===false && timer.time===timer.initialTime && timer.warningTime===5) {
             return "Start";
         } else {
             return "Reset";
@@ -14,15 +14,14 @@ const TimerButton = ({ initialTime, warningTime, setWarningTime, time, setTime, 
     }
 
     const handleButtonClick = () => {
-        if (runTimer===false && time===initialTime && warningTime===5) {
-            return () => setRunTimer(true);
-        } else if (runTimer===false) {
+        if (timer.runTimer===false && timer.time===timer.initialTime && timer.warningTime===5) {
+            return () => setTimer({...timer, runTimer: true});
+        } else if (timer.runTimer===false) {
             return () => {
-                setWarningTime(5);
-                setTime(initialTime);
+                setTimer({...timer, warningTime: 5, time: timer.initialTime});
             }
         } else {
-            return () => setRunTimer(false);
+            return () => setTimer({...timer, runTimer: false});
         }
     }
 

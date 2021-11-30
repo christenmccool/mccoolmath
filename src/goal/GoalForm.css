@@ -22,7 +22,7 @@
     font-size: 25px;
     color: darkslategrey;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-self: end;
     gap: 8px;
     padding: 0px 0px 0px 40px;

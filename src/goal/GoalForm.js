@@ -3,16 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare, faWindowClose } from '@fortawesome/free-regular-svg-icons';
 import './GoalForm.css';
 
-const GoalForm = ({ numProb, setNumProb, timerType, setTimerType, initialTime, setInitialTime, toggleEditGoal }) => {
-    let totalSeconds = Math.round(initialTime / 1000);
+const GoalForm = ({ numProb, setNumProb, timer, setTimer, toggleEditGoal }) => {
+
+    let totalSeconds = Math.round(timer.initialTime / 1000);
     let initialMinutes = Math.floor(totalSeconds / 60);
     let initialSeconds = totalSeconds % 60;
 
     const [goalMin, setGoalMin] = useState(initialMinutes);
     const [goalSec, setGoalSec] = useState(initialSeconds);
     const [goalNumProb, setGoalNumProb] = useState(numProb || 25);
-    const [goalTimerType, setGoalTimerType] = useState(timerType);
-    // const [timerType, setTimerType] = useState('count-down');
+    const [goalTimerType, setGoalTimerType] = useState(timer.timerType);
 
     const handleCheckChange = (evt) => {
         setGoalTimerType(evt.target.value)
@@ -40,13 +40,12 @@ const GoalForm = ({ numProb, setNumProb, timerType, setTimerType, initialTime, s
     }
     
     const submitEdits = () => {
-        setTimerType(goalTimerType);
         if (goalTimerType === 'count-up') {
-            setInitialTime(0);
+            setTimer({...timer, timerType: goalTimerType, initialTime: 0})
             setNumProb(goalNumProb);
         } else {
             setNumProb(null);
-            setInitialTime(goalMin * 60000 + goalSec * 1000);
+            setTimer({...timer, timerType: goalTimerType, initialTime: goalMin * 60000 + goalSec * 1000})
         }
         toggleEditGoal();
     }

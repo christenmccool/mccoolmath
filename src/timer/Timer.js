@@ -1,52 +1,42 @@
 import React, { useEffect } from 'react';
+
 import './Timer.css';
 
-const Timer = ({ initialTime, timerType, warningTime, setWarningTime, time, setTime, runTimer, setRunTimer }) => {
-
-    useEffect(() => {
-        setTime(initialTime);
-    }, [initialTime])
-
-    useEffect(() => {
-        let timerId;
+const Timer = ({timerState, timerDispatch, timer, setTimer}) => {
     
-        if (runTimer) {
-            let initialWarningTime = 5000;
-            let currTime = Date.now();                
-
-            timerId = setInterval(() => {   
-                let timeRemaining = initialWarningTime - (Date.now() - currTime);
-                if (timeRemaining < -500) {
-                    clearInterval(timerId);
-                }
-                setWarningTime(Math.round(timeRemaining / 1000));
-            }, 1000);
-        } else {
-            clearInterval(timerId);
-        }
-    
-        return () => clearInterval(timerId);
-    }, [runTimer]);
+    useEffect(() => {
+        setTimer({...timer, time: timer.initialTime});
+    }, [timer.initialTime])
 
     useEffect(() => {
         let timerId;
     
-        if (runTimer && warningTime <=0) {
+        if (timer.runTimer) {
             let currTime = Date.now();                
 
-            if (timerType === 'count-up') {
+            if (timer.timerType === 'count-up') {
                 timerId = setInterval(() => {
                     let timeEllapsed = Date.now() - currTime;
-                    setTime(timeEllapsed);
-                }, 1000);
-            } else if (timerType === 'count-down') {
-                timerId = setInterval(() => {
-                    let timeRemaining = initialTime - (Date.now() - currTime);
-                    if (timeRemaining < 100) {
-                        clearInterval(timerId);
-                        setRunTimer(false);
+                    if (timeEllapsed <= 5000) {
+                        setTimer({...timer, warningTime: Math.round((5000 - timeEllapsed)/1000)});
+                    } else {
+                        setTimer({...timer, warningTime: 0, time: timeEllapsed - 5000});
                     }
-                    setTime(timeRemaining);
+                }, 1000);
+            } else if (timer.timerType === 'count-down') {
+                timerId = setInterval(() => {
+                    let timeEllapsed = Date.now() - currTime;
+                    if (timeEllapsed <= 5000) {
+                        setTimer({...timer, warningTime: Math.round((5000 - timeEllapsed)/1000)});
+                    } else {
+                        let timeRemaining = 5000 + timer.initialTime - timeEllapsed;
+                        if (timeRemaining < 100) {
+                            clearInterval(timerId);
+                            setTimer({...timer, runTimer: false});
+                        } else {
+                            setTimer({...timer, warningTime: 0, time: timeRemaining});
+                        }
+                    }
                 }, 1000);
             }
         } else {
@@ -54,7 +44,7 @@ const Timer = ({ initialTime, timerType, warningTime, setWarningTime, time, setT
         }
     
         return () => clearInterval(timerId);
-    }, [runTimer, warningTime]);
+    }, [timer.runTimer]);
 
     const formatTime = (time) => {
         let totalSeconds = Math.round(time / 1000)
@@ -75,7 +65,7 @@ const Timer = ({ initialTime, timerType, warningTime, setWarningTime, time, setT
 
     return (
         <div className="Timer">
-            {formatTime(time)}
+            {formatTime(timer.time)}
         </div>
     )
 }
