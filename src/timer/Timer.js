@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import './Timer.css';
 
-const Timer = ({timerState, timerDispatch, timer, setTimer}) => {
+const Timer = ({ timer, setTimer }) => {
     
     useEffect(() => {
         setTimer({...timer, time: timer.initialTime});
@@ -20,7 +20,11 @@ const Timer = ({timerState, timerDispatch, timer, setTimer}) => {
                     if (timeEllapsed <= 5000) {
                         setTimer({...timer, warningTime: Math.round((5000 - timeEllapsed)/1000)});
                     } else {
-                        setTimer({...timer, warningTime: 0, time: timeEllapsed - 5000});
+                        if (timeEllapsed - 5000 < 100) {
+                            setTimer({...timer, warningTime: 0, time: timeEllapsed - 5000});
+                        } else {
+                            setTimer({...timer, warningTime: -1, time: timeEllapsed - 5000});
+                        }
                     }
                 }, 1000);
             } else if (timer.timerType === 'count-down') {
@@ -34,7 +38,11 @@ const Timer = ({timerState, timerDispatch, timer, setTimer}) => {
                             clearInterval(timerId);
                             setTimer({...timer, runTimer: false});
                         } else {
-                            setTimer({...timer, warningTime: 0, time: timeRemaining});
+                            if (timeEllapsed - 5000 < 100) {
+                                setTimer({...timer, warningTime: 0, time: timeRemaining});
+                            } else {
+                                setTimer({...timer, warningTime: -1, time: timeRemaining});
+                            }
                         }
                     }
                 }, 1000);

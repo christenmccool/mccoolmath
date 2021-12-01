@@ -22,7 +22,15 @@ const Problem = ({ INITIAL_STATE, problem, setProblem, setScore }) => {
     const inputFieldRef = useRef();
 
     useEffect(()=> {
-        setProblem(INITIAL_STATE);
+        setProblem({
+            latex: null, 
+            problemType: null, 
+            args: null,
+            userAnswer: null,
+            correctAnswer: null, 
+            status: null,
+            previousUserAnswers: []
+        });
     }, [searchParams])
 
     useEffect(() => {
@@ -47,7 +55,15 @@ const Problem = ({ INITIAL_STATE, problem, setProblem, setScore }) => {
     }, [problem.status])
 
     const getProblem = () => {
-        setProblem(INITIAL_STATE);
+        setProblem({
+            latex: null, 
+            problemType: null, 
+            args: null,
+            userAnswer: null,
+            correctAnswer: null, 
+            status: null,
+            previousUserAnswers: []
+        });
     }
 
     const submitUserAnswer = (userAnswer) => {

@@ -6,9 +6,9 @@
     color: #2B7C85;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
     .Score {
         flex-direction: row;
         gap: 30px;
     }
-}
+} */

@@ -5,12 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import './GoalWrapper.css';
 
-const GoalWrapper = ({ timer, setTimer }) => {
+const GoalWrapper = ({ editGoal, setEditGoal, setScore, timer, setTimer }) => {
     const [numProb, setNumProb] = useState(25);
-    const [editGoal, setEditGoal] = useState(false);
 
     const toggleEditGoal = () => {
-        setEditGoal(!editGoal)
+        if (!editGoal) {
+            setScore({correct: 0, attempts: 0});
+            setTimer({...timer, time:timer.initialTime, warningTime: 5, runTimer: false})
+        }
+        setEditGoal(!editGoal);
     }
 
     return (

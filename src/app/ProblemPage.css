@@ -40,3 +40,27 @@
     gap: 20px;
     margin: 10px 0px;
 }
+
+.ProblemPage-stats {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.ProblemPage-stat {
+    width: 90%;
+}
+
+@media (min-width: 1024px) {
+    .ProblemPage-stats {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: flex-start;
+    }
+    
+    .ProblemPage-stat {
+        width: 50%;
+    }
+}

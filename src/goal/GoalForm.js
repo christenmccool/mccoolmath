@@ -41,11 +41,11 @@ const GoalForm = ({ numProb, setNumProb, timer, setTimer, toggleEditGoal }) => {
     
     const submitEdits = () => {
         if (goalTimerType === 'count-up') {
-            setTimer({...timer, timerType: goalTimerType, initialTime: 0})
+            setTimer({...timer, timerType: goalTimerType, warningTime: 5, initialTime: 0})
             setNumProb(goalNumProb);
         } else {
             setNumProb(null);
-            setTimer({...timer, timerType: goalTimerType, initialTime: goalMin * 60000 + goalSec * 1000})
+            setTimer({...timer, timerType: goalTimerType, warningTime: 5, initialTime: goalMin * 60000 + goalSec * 1000})
         }
         toggleEditGoal();
     }

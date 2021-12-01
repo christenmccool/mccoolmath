@@ -1,6 +1,10 @@
+.TimerButton {
+    width: 100%;
+    display: flex;
+}
+
 .TimerButton button {
     cursor: pointer;
-    display: inline-block;
     background-color: #91D34C;
     color: white;
     margin: 0px 2px;
@@ -8,4 +12,5 @@
     font-size: 35px;
     border-radius: 5px;
     border: 1px solid grey;
+    flex: 1;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import './TimerButton.css';
 
-const TimerButton = ({timerState, timerDispatch, timer, setTimer}) => {
+const TimerButton = ({ timer, setTimer }) => {
 
     const buttonText = () => {
         if (timer.runTimer===true) {

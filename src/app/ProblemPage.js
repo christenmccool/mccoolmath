@@ -1,6 +1,4 @@
-import React, { useState, useReducer } from 'react';
-import reducer from '../reducers/timer';
-
+import React, { useState } from 'react';
 import Options from '../options/Options';
 import Problem from '../problem/Problem';
 import Timer from '../timer/Timer';
@@ -31,22 +29,21 @@ const ProblemPage = () => {
     }
 
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
-    const [score, setScore] = useState({correct: 0, attempts: 0});
     const [timer, setTimer] = useState(INITIAL_TIMER_STATE);
+    const [score, setScore] = useState({correct: 0, attempts: 0});
+    const [editGoal, setEditGoal] = useState(false);
 
-    const [timerState, timerDispatch] = useReducer(reducer, INITIAL_TIMER_STATE);
 
     return (
         <div className="ProblemPage">
             <div className="ProblemPage-main">
                 <Options />
                 <Problem 
-                    INITIAL_STATE={INITIAL_PROB_STATE}
                     problem={problem}
                     setProblem={setProblem}
                     setScore={setScore} 
                 />
-                {(timer.runTimer && (timer.warningTime > 0 || timer.warningTime === 0 && timer.time===timer.initialTime)) || (!timer.runTimer && timer.warningTime !== 5 && timer.warningTime >= 0) ?
+                {(timer.runTimer && timer.warningTime!==-1) || (!timer.runTimer && timer.warningTime !== 5 && timer.warningTime >= 0) ?
                     <div className="ProblemPage-warning">
                         <WarningTimer
                             time={timer.warningTime}
@@ -55,26 +52,31 @@ const ProblemPage = () => {
                 : null}
                 <div className="ProblemPage-timer">
                     <Timer 
-                        timerState ={timerState}
-                        timerDispatch = {timerDispatch}
                         timer={timer}
                         setTimer={setTimer}
                     />
                 </div>
             </div>
             <div className="ProblemPage-info">
-                <Score 
-                    score={score}
-                />    
-                <TimerButton 
-                    timerState ={timerState}
-                    timerDispatch = {timerDispatch}
-                    timer={timer}
-                    setTimer={setTimer}
-                />
+                {!editGoal ? 
+                    <div className="ProblemPage-stats">
+                        <div className="ProblemPage-stat">
+                            <Score 
+                                score={score}
+                            />    
+                        </div>
+                        <div className="ProblemPage-stat">
+                            <TimerButton 
+                                timer={timer}
+                                setTimer={setTimer}
+                            />
+                        </div>
+                    </div>
+                : null}
                 <GoalWrapper 
-                    timerState ={timerState}
-                    timerDispatch = {timerDispatch}
+                    editGoal={editGoal} 
+                    setEditGoal={setEditGoal}
+                    setScore={setScore}
                     timer={timer}
                     setTimer={setTimer}
                 />
