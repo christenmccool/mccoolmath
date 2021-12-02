@@ -17,9 +17,9 @@ const GoalWrapper = ({ editGoal, setEditGoal, setScore, timer, setTimer }) => {
     }
 
     return (
-        <div className="GoalWrapper">
-            {editGoal ?
-            <>
+        <>
+        {editGoal ?
+            <div className="GoalWrapper-form">
                 <GoalForm 
                     numProb={numProb}
                     setNumProb={setNumProb}
@@ -27,22 +27,16 @@ const GoalWrapper = ({ editGoal, setEditGoal, setScore, timer, setTimer }) => {
                     setTimer={setTimer}
                     toggleEditGoal={toggleEditGoal}
                 />
-            </>
+            </div>
             :
-            <>
-                <div className="GoalWrapper-goal">
-                    <Goal 
-                        numProb={numProb}
-                    />
+            <div className="GoalWrapper-goal">
+                <Goal numProb={numProb} />
+                <div className="GoalWrapper-icon">
                     <FontAwesomeIcon icon={faEdit}  onClick={toggleEditGoal}/>
-                </div>   
-            </>
-
-            }
-
-
-
-        </div>
+                </div>
+            </div>   
+        }
+        </>
     )    
 }
 

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Options from '../options/Options';
+import HoldingScreen from './HoldingScreen';
 import Problem from '../problem/Problem';
 import Timer from '../timer/Timer';
 import Score from '../score/Score';
-import TimerButton from '../timer/TimerButton';
+import StartButton from './StartButton';
 import WarningTimer from '../timer/WarningTimer';
 import GoalWrapper from '../goal/GoalWrapper';
 import './ProblemPage.css';
@@ -28,28 +29,46 @@ const ProblemPage = () => {
         previousUserAnswers: []
     }
 
+    const INITIAL_SCORE_STATE = {
+        correct: 0, 
+        attempts: 0
+    }
+
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
     const [timer, setTimer] = useState(INITIAL_TIMER_STATE);
-    const [score, setScore] = useState({correct: 0, attempts: 0});
+    const [score, setScore] = useState(INITIAL_SCORE_STATE);
     const [editGoal, setEditGoal] = useState(false);
 
+    // {!timer.runTimer || (timer.runTimer && !warningTime()) ?
+
+    const warningTime = () => {
+        if (timer.warningTime === 0) {
+            return "Go!";
+        } else if ((timer.runTimer && timer.warningTime!==-1) || 
+            (!timer.runTimer && timer.warningTime !== 5 && timer.warningTime >= 0)) {
+                return timer.warningTime;
+        }
+        return null;
+    }
 
     return (
         <div className="ProblemPage">
             <div className="ProblemPage-main">
                 <Options />
-                <Problem 
-                    problem={problem}
-                    setProblem={setProblem}
-                    setScore={setScore} 
-                />
-                {(timer.runTimer && timer.warningTime!==-1) || (!timer.runTimer && timer.warningTime !== 5 && timer.warningTime >= 0) ?
-                    <div className="ProblemPage-warning">
-                        <WarningTimer
-                            time={timer.warningTime}
-                        />
-                    </div>
-                : null}
+                {timer.runTimer && warningTime()>0 ?
+                    <HoldingScreen /> 
+                    :
+                    <Problem 
+                        problem={problem}
+                        setProblem={setProblem}
+                        setScore={setScore} 
+                    /> 
+                }
+                <div className="ProblemPage-warning">
+                    <WarningTimer
+                        time={warningTime()}
+                    />
+                </div>
                 <div className="ProblemPage-timer">
                     <Timer 
                         timer={timer}
@@ -57,30 +76,27 @@ const ProblemPage = () => {
                     />
                 </div>
             </div>
-            <div className="ProblemPage-info">
-                {!editGoal ? 
-                    <div className="ProblemPage-stats">
-                        <div className="ProblemPage-stat">
-                            <Score 
-                                score={score}
-                            />    
-                        </div>
-                        <div className="ProblemPage-stat">
-                            <TimerButton 
-                                timer={timer}
-                                setTimer={setTimer}
-                            />
-                        </div>
-                    </div>
-                : null}
-                <GoalWrapper 
-                    editGoal={editGoal} 
-                    setEditGoal={setEditGoal}
-                    setScore={setScore}
-                    timer={timer}
-                    setTimer={setTimer}
-                />
-            </div>
+
+            {!editGoal ? 
+                <div className="ProblemPage-stats">
+                    <Score 
+                        score={score}
+                    />    
+                    <StartButton 
+                        setScore={setScore}
+                        timer={timer}
+                        setTimer={setTimer}
+                    />
+                </div>
+            : null}
+
+            <GoalWrapper 
+                editGoal={editGoal}
+                setEditGoal={setEditGoal}
+                setScore={setScore}
+                timer={timer}
+                setTimer={setTimer}
+            />
         </div>
     )
 }

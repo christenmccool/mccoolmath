@@ -12,45 +12,29 @@ const Timer = ({ timer, setTimer }) => {
         let timerId;
     
         if (timer.runTimer) {
-            let currTime = Date.now();                
+            let startTime = Date.now();    
 
-            if (timer.timerType === 'count-up') {
-                timerId = setInterval(() => {
-                    let timeEllapsed = Date.now() - currTime;
-                    if (timeEllapsed <= 5000) {
-                        setTimer({...timer, warningTime: Math.round((5000 - timeEllapsed)/1000)});
-                    } else {
-                        if (timeEllapsed - 5000 < 100) {
-                            setTimer({...timer, warningTime: 0, time: timeEllapsed - 5000});
-                        } else {
-                            setTimer({...timer, warningTime: -1, time: timeEllapsed - 5000});
-                        }
-                    }
-                }, 1000);
-            } else if (timer.timerType === 'count-down') {
-                timerId = setInterval(() => {
-                    let timeEllapsed = Date.now() - currTime;
-                    if (timeEllapsed <= 5000) {
-                        setTimer({...timer, warningTime: Math.round((5000 - timeEllapsed)/1000)});
-                    } else {
-                        let timeRemaining = 5000 + timer.initialTime - timeEllapsed;
-                        if (timeRemaining < 100) {
-                            clearInterval(timerId);
-                            setTimer({...timer, runTimer: false});
-                        } else {
-                            if (timeEllapsed - 5000 < 100) {
-                                setTimer({...timer, warningTime: 0, time: timeRemaining});
-                            } else {
-                                setTimer({...timer, warningTime: -1, time: timeRemaining});
-                            }
-                        }
-                    }
-                }, 1000);
-            }
+            timerId = setInterval(() => {
+                let timeEllapsed = Date.now() - startTime;
+                let timerTime = timer.timerType === 'count-down' ? 
+                                timer.initialTime - timeEllapsed + 5000 : 
+                                timeEllapsed - 5000;
+
+                if (timeEllapsed <= 5000) {
+                    setTimer({...timer, warningTime: Math.round((5000 - timeEllapsed)/1000)});
+                } else if (timer.timerType === 'count-down' && timerTime < 100) {
+                    clearInterval(timerId);
+                    setTimer({...timer, runTimer: false});
+                } else if (timeEllapsed - 5000 < 100) {
+                    setTimer({...timer, warningTime: 0, time: timerTime});
+                }else {
+                    setTimer({...timer, warningTime: -1, time: timerTime});
+                }
+            }, 1000);
         } else {
             clearInterval(timerId);
         }
-    
+
         return () => clearInterval(timerId);
     }, [timer.runTimer]);
 

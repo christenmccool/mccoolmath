@@ -9,7 +9,7 @@ import './Problem.css';
 
 const API_BASE_URL = "http://localhost:3000";
 
-const Problem = ({ INITIAL_STATE, problem, setProblem, setScore }) => {
+const Problem = ({ problem, setProblem, setScore }) => {
     const {skill} = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
     const searchParamsStr = searchParams.toString();
@@ -21,17 +21,21 @@ const Problem = ({ INITIAL_STATE, problem, setProblem, setScore }) => {
     const tryAgainBtnRef = useRef();
     const inputFieldRef = useRef();
 
-    useEffect(()=> {
-        setProblem({
-            latex: null, 
-            problemType: null, 
-            args: null,
-            userAnswer: null,
-            correctAnswer: null, 
-            status: null,
-            previousUserAnswers: []
+    useEffect(() => {
+        if (searchParamsStr==="") return;
+        const url = `${API_URL}?${searchParamsStr}`;
+        axios.get(url)
+        .then(resp => setProblem({...resp.data, 
+                        userAnswer: null,
+                        correctAnswer: null, 
+                        status: null,
+                        previousUserAnswers: []
+        }))
+        .catch(err => {
+            console.log(err);
+            navigate("/");
         });
-    }, [searchParams])
+    }, [searchParams]);
 
     useEffect(() => {
         if (problem.latex) return;
@@ -42,7 +46,7 @@ const Problem = ({ INITIAL_STATE, problem, setProblem, setScore }) => {
             console.log(err);
             navigate("/");
         });
-    }, [problem, searchParamsStr, API_URL, navigate]);
+    }, [problem.status]);
 
     useEffect(() => {
         if (!problem.status) {

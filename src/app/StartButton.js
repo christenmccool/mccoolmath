@@ -1,7 +1,7 @@
 import React from 'react';
-import './TimerButton.css';
+import './StartButton.css';
 
-const TimerButton = ({ timer, setTimer }) => {
+const StartButton = ({ setScore, timer, setTimer }) => {
 
     const buttonText = () => {
         if (timer.runTimer===true) {
@@ -15,10 +15,14 @@ const TimerButton = ({ timer, setTimer }) => {
 
     const handleButtonClick = () => {
         if (timer.runTimer===false && timer.time===timer.initialTime && timer.warningTime===5) {
-            return () => setTimer({...timer, runTimer: true});
+            return () => {
+                setTimer({...timer, runTimer: true});
+                setScore({correct: 0, attempts: 0});
+            }
         } else if (timer.runTimer===false) {
             return () => {
                 setTimer({...timer, warningTime: 5, time: timer.initialTime});
+                setScore({correct: 0, attempts: 0});
             }
         } else {
             return () => setTimer({...timer, runTimer: false});
@@ -26,7 +30,7 @@ const TimerButton = ({ timer, setTimer }) => {
     }
 
     return (
-        <div className="TimerButton">
+        <div className="StartButton">
             <button className="Timer-start-btn" type="button" onClick={handleButtonClick()}>
                 {buttonText()}
             </button>
@@ -34,4 +38,4 @@ const TimerButton = ({ timer, setTimer }) => {
     )
 }
 
-export default TimerButton;
+export default StartButton;

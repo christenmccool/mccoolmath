@@ -11,29 +11,28 @@
 
 .ProblemPage-warning {
     position: absolute;
-    top: 450px;
+    bottom: 150px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .ProblemPage-timer {
     margin: 10px 0px;
-    position: relative;
 }
 
 @media (min-width: 1024px) {
     .ProblemPage-warning {
-        top: 400px;
+        bottom: 125px;
     }
 
     .ProblemPage-timer {
         position: absolute;
-        bottom: 5px;
-        right: 25px;
+        bottom: 0px;
+        right: 20px;
     }
 }
 
-.ProblemPage-info {
+.ProblemPage-stats {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,26 +40,12 @@
     margin: 10px 0px;
 }
 
-.ProblemPage-stats {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-}
-
-.ProblemPage-stat {
-    width: 90%;
-}
-
 @media (min-width: 1024px) {
     .ProblemPage-stats {
-        display: flex;
         flex-direction: row;
-        width: 100%;
-        align-items: flex-start;
-    }
-    
-    .ProblemPage-stat {
-        width: 50%;
+        justify-content: space-between;
+        margin: 20px 10px;
     }
 }
+
+

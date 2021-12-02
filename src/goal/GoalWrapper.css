@@ -1,9 +1,8 @@
-.GoalWrapper {
+.GoalWrapper-form {
     display: flex;
     justify-content: center;
     margin: 10px auto;
     gap: 30px;
-    width: 100%;
 }
 
 .GoalWrapper-goal {
@@ -11,8 +10,21 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-    font-size: 20px;
-    color: slategray;
+    color: darkgrey;
 }
+
+@media (min-width: 1024px) {
+    .GoalWrapper-goal {
+        justify-content: flex-end;
+    }
+}
+
+.GoalWrapper-icon {
+    color: darkgrey;
+}
+
+
+
+
 
 
