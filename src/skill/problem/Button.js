@@ -1,7 +1,8 @@
 import React from 'react';
 import './Button.css'
 
-const Button = ( {role, handleClick=null, refToAccess=null} ) => {
+const Button = ( {  role, handleClick=null, refToAccess=null } ) => {
+
     const buttonText = {
         "check" : "Check",
         "newProblem" : "Next",
@@ -9,15 +10,15 @@ const Button = ( {role, handleClick=null, refToAccess=null} ) => {
         "tryAgain" : "Try Again",
     }
     const buttonClass = {
-        "check" : "check",
-        "newProblem" : "other",
-        "getAnswer" : "other",
-        "tryAgain" : "other"
+        "check" : "Button-btn-check",
+        "newProblem" : "Button-btn-other",
+        "getAnswer" : "Button-btn-other",
+        "tryAgain" : "Button-btn-other"
     }
 
     return (
         <div className="Button">
-            <button className={`Button-btn Button-btn-${buttonClass[role]}`} onClick={handleClick} ref={refToAccess}>
+            <button className={`Button-btn ${buttonClass[role]}`} onClick={handleClick} ref={refToAccess}>
                 {buttonText[role]}
             </button>
         </div>

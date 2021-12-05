@@ -1,0 +1,62 @@
+.Skill {
+    margin: 20px auto;
+    width: 60%;
+    min-width: 350px;
+    max-width: 800px;
+    text-align: center;
+    position: relative;
+}
+
+.Skill-main {
+    position: relative;
+}
+
+.Skill-warning-timer {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.Skill-timer {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.Skill-info {
+    margin: 10px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    font-size: 30px;
+}
+
+.Skill-info-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+@media (min-width: 1024px) {
+    .Skill-timer {
+        right: 20px;
+        left: auto;
+        transform: none;
+    }
+
+    .Skill-info-sub {
+        width: 98%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .Skill-start-button {
+        width: 98%;
+        text-align: right;
+    }
+}
+

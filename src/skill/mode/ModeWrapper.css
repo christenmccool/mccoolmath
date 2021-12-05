@@ -1,0 +1,13 @@
+.ModeWrapper {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 10px;
+    color: grey;
+}
+
+.ModeWrapper-icon {
+    display: flex;
+    align-items: center;
+}
+

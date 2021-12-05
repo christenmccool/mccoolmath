@@ -1,0 +1,24 @@
+.SkillMessage {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 50px;
+    height: 430px;
+    width: 95%;
+    padding: 55px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background-color: white;
+    opacity: 0.9;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 5px darkgrey;
+}
+
+.SkillMessage-text {
+    margin-top: 65px;
+    font-size: 80px;
+}

@@ -20,14 +20,14 @@ const Options = () => {
                 ],
                     default: 'all'
                 } 
-            // case "orderofops":
-            //     return { opts: [
-            //         {opt:'l1', text: 'Level 1', params: {"n":"3"}, paramStr: "n=3"},
-            //         {opt:'l2', text: 'Level 2', params: {"n":"4"}, paramStr: "n=4"},
-            //         {opt:'l3', text: 'Level 3', params: {"n":"5"}, paramStr: "n=5"},
-            //     ],
-            //         default: 'l1'
-            //     } 
+            case "orderofops":
+                return { opts: [
+                    {opt:'l1', text: 'Level 1', params: {"n":"3"}, paramStr: "n=3"},
+                    {opt:'l2', text: 'Level 2', params: {"n":"4"}, paramStr: "n=4"},
+                    {opt:'l3', text: 'Level 3', params: {"n":"5"}, paramStr: "n=5"},
+                ],
+                    default: 'l2'
+                } 
             default: 
                 return null
         }

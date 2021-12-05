@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Menu.css';
 
+/** Menu component for McCool Math app
+ * Provides a link to each skill
+ */
 const Menu = () => {
 
     const VALID_SKILLS = {
@@ -14,7 +17,7 @@ const Menu = () => {
           <nav className="Menu-nav">
               {Object.keys(VALID_SKILLS).map(ele => {
                   return (
-                    <Link to={ele} key={ele} className="Menu-link">{VALID_SKILLS[ele]}</Link>
+                    <Link to={`skills/${ele}`} key={ele} className="Menu-link">{VALID_SKILLS[ele]}</Link>
                   )
               })}
           </nav>

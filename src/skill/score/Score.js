@@ -5,10 +5,10 @@ const Score = ({ score }) => {
 
     return (
         <div className="Score">
-            <div className="Score-score">
+            <div>
                 Correct: {score.correct}
             </div>
-            <div className="Score-score">
+            <div >
                 Attempts: {score.attempts}
             </div>
         </div>

@@ -7,7 +7,7 @@ import Message from './Message';
 import Button from './Button';
 import './Problem.css';
 
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://mccoolmath.herokuapp.com"
 
 const Problem = ({ problem, setProblem, setScore }) => {
     const {skill} = useParams();
@@ -113,37 +113,19 @@ const Problem = ({ problem, setProblem, setScore }) => {
         });
     }
 
-    const buttonRole = () => {
+    const renderButtons = () => {
         switch (problem.status) {
             case null:
+                return <Button role="getAnswer" handleClick={getCorrectAnswer} />
             case "incorrect":
-                return "getAnswer";
+                return (<>
+                    <Button role="getAnswer" handleClick={getCorrectAnswer} />
+                    <Button role="tryAgain" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
+                </>)
             case "correct":
+                return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
             case "showCorrect":
-                return "newProblem";
-            default: 
-                return null
-        }
-    }
-
-    const buttonRef = () => {
-        switch (problem.status) {
-            case "correct":
-            case "showCorrect":
-                return newProbBtnRef;
-            default:
-                return null;
-        }
-    }
-
-    const handleButtonClick = () => {
-        switch (problem.status) {
-            case null:
-            case "incorrect":
-                return getCorrectAnswer;
-            case "correct":
-            case "showCorrect":
-                return getProblem;
+                return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
             default: 
                 return null
         }
@@ -161,12 +143,7 @@ const Problem = ({ problem, setProblem, setScore }) => {
                 }
             </div>
             <div className="Problem-buttons">
-                <Button role={buttonRole()} refToAccess={buttonRef()} handleClick={handleButtonClick()} />
-                                                       
-                {problem.status === 'incorrect' ? 
-                    <Button role="tryAgain" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
-                    : null
-                }
+                {renderButtons()}
             </div>
         </div>
     )

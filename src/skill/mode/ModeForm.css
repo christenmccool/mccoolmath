@@ -1,0 +1,126 @@
+.ModeForm {
+    height: 470px;
+    width: 95%;
+    margin: 0px auto;
+    padding: 30px 10px 50px 10px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 5px darkgrey;
+    position: relative;
+}
+
+.ModeForm h1 {
+    text-align: center;
+    font-size: 50px;
+    margin: 0px 0px 20px 0px;
+    padding: 0px;
+}
+
+.ModeForm-inputs {
+    margin: 10px 0px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 20px;
+}
+
+.ModeForm-input-group {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    font-size: 30px;
+}
+
+.ModeForm-description {
+    font-size: 25px;
+    font-style: italic;
+    margin-left: 25px;
+}
+
+input[type="checkbox"] {
+    height: 20px;
+    transform: scale(2);
+}
+
+.ModeForm label {
+    margin-left: 15px;
+}
+
+.ModeForm select {    
+    font-size: 30px;
+}
+
+.ModeForm-warning {
+    margin-left: 25px;
+    font-size: 25px;
+    color: darkgrey;
+}
+
+.ModeForm-icons {    
+    font-size: 30px;
+    color: darkslategrey;
+    display: flex;
+    justify-content: flex-end;
+    align-self: end;
+    gap: 8px;
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+}
+
+.ModeForm-checkIcon {    
+    color: #91D34C;
+}
+
+.ModeForm-checkIcon-disabled {    
+    color: darkgrey;
+}
+
+@media (min-width: 1024px) {
+    .ModeForm {
+        padding: 10px 10px 70px 10px;
+        text-align: left;
+    }
+
+    .ModeForm h1 {
+        font-size: 60px;
+    }    
+
+    .ModeForm-inputs {
+        margin-left: 10px;
+        gap: 30px;
+    }
+
+    .ModeForm-input-group {
+        flex-direction: row;
+        align-content: start;
+        gap: 30px;
+        font-size: 40px;
+    }
+
+    input[type="checkbox"] {
+        height: 30px;
+    }
+
+    .ModeForm-description {
+        text-align: left;
+        font-size: 30px;
+    }    
+
+    .ModeForm select {    
+        font-size: 40px;
+    }
+
+    .ModeForm-warning {
+        font-size: 30px;
+    }
+
+    .ModeForm-icons {    
+        font-size: 40px;
+        margin-top: 20px;
+    }
+    
+}
+
+
+
