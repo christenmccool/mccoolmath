@@ -9,7 +9,7 @@ import './ModeForm.css';
  * - Number of problems goal: User selects number of problems to complete with countup timer
  * - Countdown goal: User selects length of countdown timer
 */
-const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTimer }) => {
+const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTimer, resetProblem }) => {
 
     const WARNING_LENGTH = 3000;
     
@@ -86,6 +86,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
         }
         resetScore();
         resetTimer();
+        resetProblem();
     }
 
     return (

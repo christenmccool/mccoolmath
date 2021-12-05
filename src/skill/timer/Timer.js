@@ -7,7 +7,7 @@ import './Timer.css';
  * formattedTime function calculates time to display for countdown timer
  * formatterTime function also removes warning time for display time
 */
-const Timer = ({ settings, timer, setTimer }) => {
+const Timer = ({ settings, timer, setTimer, setComplete }) => {
 
     const countdownLength = settings.timerType === 'count-down' ? settings.timerStart + settings.warningLength : null;
     
@@ -27,6 +27,7 @@ const Timer = ({ settings, timer, setTimer }) => {
                         time: timeEllapsed,
                         runTimer: false
                     });
+                    setComplete(true);
                 } else {
                     setTimer({
                         time: timeEllapsed,

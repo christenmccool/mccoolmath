@@ -18,9 +18,10 @@ import './Skill.css';
  * - Practice: no timer
  * - Number of problems goal: complete selected number of problems with countup timer
  * - Countdown goal: complete max problems given countdown timer
- * Timer components only render values during goal modes
+ * Timer components only display during goal modes
  * Score and current mode displayed for all modes
- * Edit mode and timer/goal settings with ModeForm component
+ * Display message when goal is completed
+ * Renders ModeForm when editing mode
 */
 const Skill = () => {
 
@@ -28,6 +29,7 @@ const Skill = () => {
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
     const [timer, setTimer] = useState(INITIAL_TIMER_STATE);
     const [score, setScore] = useState(INITIAL_SCORE_STATE);
+    const [complete, setComplete] = useState(false);
 
     const startButton = useRef();
 
@@ -37,30 +39,34 @@ const Skill = () => {
     const resetTimer = () => setTimer(INITIAL_TIMER_STATE);
     const resetProblem = () => setProblem(INITIAL_PROB_STATE);
 
-    const toggleEditMode = () => {
-        setSettings({...settings, editingMode:!settings.editingMode})
-        stopTimer();
-    }
-
-    //If number of problem goal is met or countdown timer is complete, display message
-    const numProbCompleted = settings.mode==="numProbGoal" && score.correct===settings.goalNumProblems;
-    const countdownCompleted = settings.mode==="countdownGoal" && timer.time+100>(settings.timerStart + settings.warningLength);
-
-    useEffect(() => {
-        if (numProbCompleted || countdownCompleted) stopTimer();
-    }, [timer.time, score.correct])
-
-    const completedMessage = () => {
-        if (numProbCompleted || countdownCompleted) return `${score.correct} problems complete!`;
-        return null;
-    }
-
     //Focus on start button before user selects start
     useEffect(() => {
-        if (settings.mode !== "practice" && timer.time===null) {
+        if (settings.mode !== "practice" && timer.time === null) {
             startButton.current.focus();
         }
     }, [settings.mode, timer.time]);
+
+    //Stop timer and set complete to false when toggling edit mode
+    const toggleEditMode = () => {
+        setSettings({...settings, editingMode: !settings.editingMode})
+        stopTimer();
+        setComplete(false);
+    }
+
+    //Check to see if number of problems goal is complete
+    useEffect(() => {
+        if (settings.mode !== "numProbGoal") return;
+        if (score.correct === settings.goalNumProblems) {
+            setComplete(true);
+            stopTimer();
+        }
+    }, [score.correct])
+
+    //Display message when goal is complete
+    const completeMessage = () => {
+        if (complete) return `${score.correct} problems complete!`;
+        return null;
+    }
 
     //Calculate warning countdown time
     const warningTime = () => {           
@@ -81,6 +87,7 @@ const Skill = () => {
                     toggleEditMode={toggleEditMode}
                     resetScore={resetScore}
                     resetTimer={resetTimer}
+                    resetProblem={resetProblem}
                 /> 
             </div>
         )
@@ -90,18 +97,18 @@ const Skill = () => {
         <div className="Skill">
             <div className="Skill-main">
                 <Options />
-                {completedMessage() || warningTime() > 0 ?
+                {completeMessage() || warningTime() > 0 ?
                     <HoldingScreen 
-                        text={completedMessage() || "Get Ready!"}
+                        text={completeMessage() || "Get Ready!"}
                     /> 
                 : null }
                 <Problem 
-                    visible={!completedMessage() && !warningTime()}
+                    visible={!completeMessage() && !warningTime()}
                     problem={problem}
                     setProblem={setProblem}
                     setScore={setScore} 
                 /> 
-                {timer.runTimer ?
+                {timer.time !== null ?
                     <>
                         <div className="Skill-warning-timer">
                             <WarningTimer
@@ -113,6 +120,7 @@ const Skill = () => {
                                 settings={settings}
                                 timer={timer}
                                 setTimer={setTimer}
+                                setComplete={setComplete}
                             />
                         </div>
                     </>
@@ -139,6 +147,7 @@ const Skill = () => {
                             resetTimer={resetTimer}
                             resetScore={resetScore}
                             resetProblem={resetProblem}
+                            setComplete={setComplete}
                             refToAccess={startButton}
                         /> 
                     </div>
