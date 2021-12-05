@@ -62,6 +62,16 @@ const Skill = () => {
         }
     }, [settings.mode, timer.time]);
 
+    //Calculate warning countdown time
+    const warningTime = () => {           
+        let warningTime = Math.round((settings.warningLength - timer.time) / 1000);
+        if (warningTime >= 0) {
+            return warningTime;
+        } 
+        return null;
+    }
+
+    //Render ModeForm if editing mode
     if (settings.editingMode) {
         return (
             <div className="Skill">
@@ -75,35 +85,38 @@ const Skill = () => {
             </div>
         )
     }
-
+    //Render if not editing mode
     return (
         <div className="Skill">
             <div className="Skill-main">
                 <Options />
-                {completedMessage() || timer.time < settings.warningLength ?
+                {completedMessage() || warningTime() > 0 ?
                     <HoldingScreen 
                         text={completedMessage() || "Get Ready!"}
                     /> 
                 : null }
                 <Problem 
-                    visible={!completedMessage() && timer.time >= settings.warningLength}
+                    visible={!completedMessage() && !warningTime()}
                     problem={problem}
                     setProblem={setProblem}
                     setScore={setScore} 
                 /> 
-                <div className="Skill-warning-timer">
-                    <WarningTimer
-                        warningLength={settings.warningLength}
-                        time={timer.time}
-                    />
-                </div>
-                <div className="Skill-timer">
-                    <Timer 
-                        settings={settings}
-                        timer={timer}
-                        setTimer={setTimer}
-                    />
-                </div>
+                {timer.runTimer ?
+                    <>
+                        <div className="Skill-warning-timer">
+                            <WarningTimer
+                                warningTime={warningTime()}
+                            />
+                        </div>
+                        <div className="Skill-timer">
+                            <Timer 
+                                settings={settings}
+                                timer={timer}
+                                setTimer={setTimer}
+                            />
+                        </div>
+                    </>
+                : null}
             </div>
 
             <div className="Skill-info">
