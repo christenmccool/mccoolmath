@@ -1,12 +1,16 @@
 import React from 'react';
 import './WarningTimer.css'
 
+/** Warning countdown component for McCool Math app 
+ * Returns null if timer isn't running or if warning length has passed
+*/
+const WarningTimer = ({ warningLength, time }) => {
 
-const WarningTimer = ({ warningLength, timer }) => {
+    if (time===null) return null;
 
     const warningTime = () => {        
         
-        let warningTime = Math.round((warningLength - timer.time) / 1000);
+        let warningTime = Math.round((warningLength - time) / 1000);
 
         if (warningTime > 0) {
             return warningTime;
@@ -16,7 +20,7 @@ const WarningTimer = ({ warningLength, timer }) => {
         return null;
     }
 
-    if (timer.time===null) return null;
+    if (warningTime()===null) return null;
 
     return (
         <div className="WarningTimer">

@@ -3,6 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckSquare, faWindowClose } from '@fortawesome/free-regular-svg-icons';
 import './ModeForm.css';
 
+/** Edit Mode Form for McCool Math app 
+ * Three modes:
+ * - Practice: no timer
+ * - Number of problems goal: User selects number of problems to complete with countup timer
+ * - Countdown goal: User selects length of countdown timer
+*/
 const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTimer }) => {
 
     const WARNING_LENGTH = 3000;
@@ -21,8 +27,9 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
     const [formData, setFormData] = useState(initialFormData);
     const [warning, setWarning] = useState(null);
 
-    const checkClass = warning ? "ModeForm-checkIcon-disabled" : "";
+    const iconClass = warning ? "ModeForm-checkIcon-disabled" : "";
 
+    //Display warning if user select 0 min and sec for countdown timer
     useEffect(() => {
         if (formData.mode==="countdownGoal" && formData.sec===0 && formData.min===0) {
             setWarning("Countdown timer cannot be zero");
@@ -31,6 +38,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
         }
     }, [formData.min, formData.sec, formData.mode])
 
+    //mode is a string, all other field values are numbers
     const handleFieldChange = (evt) => {
         let {name, value} = evt.target;
         if (evt.target.type !== 'checkbox') {
@@ -44,7 +52,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
 
         switch (formData.mode) {
             case "practice":
-                setSettings({...settings,
+                setSettings({
                     mode: formData.mode, 
                     timerType: null,
                     timerStart: null,
@@ -54,7 +62,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                 })
                 break;
             case "numProbGoal":
-                setSettings({...settings,
+                setSettings({
                     mode: formData.mode, 
                     timerType: 'count-up',
                     timerStart: 0,
@@ -64,7 +72,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                 })
                 break;
             case "countdownGoal":
-                setSettings({...settings,
+                setSettings({
                     mode: formData.mode, 
                     timerType: 'count-down',
                     timerStart: formData.min * 60000 + formData.sec * 1000,
@@ -149,7 +157,6 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                     </div>
                     <div>
                         <select 
-                            onChange={handleFieldChange} 
                             name="min" 
                             value={formData.min}
                             onChange={handleFieldChange} 
@@ -179,7 +186,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                 </div>
 
                 <div className="ModeForm-icons">   
-                    <div className={`ModeForm-checkIcon ${checkClass}`}>                    
+                    <div className={`ModeForm-checkIcon ${iconClass}`}>                    
                         <FontAwesomeIcon icon={faCheckSquare} onClick={submitEdits} />
                     </div>
                     <div>                    

@@ -1,6 +1,7 @@
 import React from 'react';
 import './NotFound.css'
 
+//Page to display for invalid URL path
 const NotFound = () => {
     return (
         <div className="NotFound">

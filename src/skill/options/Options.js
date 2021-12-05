@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import OptionsButton from './OptionsButton'
+import OptionsTab from './OptionsTab'
 import './Options.css';
 
 const Options = () => {
@@ -62,7 +62,7 @@ const Options = () => {
         <div className="Options">
             {options().opts.map(ele => {
                 return (
-                    <OptionsButton 
+                    <OptionsTab 
                         key={ele.opt} 
                         id={ele.opt} 
                         selected={option.opt===ele.opt ? true : false}

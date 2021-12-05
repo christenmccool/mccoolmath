@@ -3,21 +3,31 @@
     padding: 5px 20px;
     font-size: 30px;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .Button-btn-check {
     background-color: #2B7C85;
     color: white;
-    border: 3px solid black;
     border-radius: 8px;
+    border: 1px solid darkgrey;
+
 }
 
 .Button-btn-other {
     background-color: white;
     color: black;
-    border: 1px solid darkgrey;
-    border-radius: 8px;
 }
+
+.Button-btn-start {
+    padding: 2px 10px;
+    background-color: #FCFCFC;
+    font-size: 35px;
+    color: #91D34C;
+    border-radius: 5px;
+    border: 1px solid #91D34C;
+}
+
 
 .Button-btn:hover, .Button-btn:focus {
     cursor: pointer;

@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
-
 import './Timer.css';
 
+/** Timer component for McCool Math app 
+ * Timer is triggered when runTimer is set to true
+ * Timer counts up from 0
+ * formattedTime function calculates time to display for countdown timer
+ * formatterTime function also removes warning time for display time
+*/
 const Timer = ({ settings, timer, setTimer }) => {
 
     const countdownLength = settings.timerType === 'count-down' ? settings.timerStart + settings.warningLength : null;
     
+    //Counts up from 0 when runTimer is set to true
+    //Countdown timer stops when time is ellapsed
     useEffect(() => {
         let timerId;
     
@@ -21,7 +28,7 @@ const Timer = ({ settings, timer, setTimer }) => {
                         runTimer: false
                     });
                 } else {
-                    setTimer({...timer, 
+                    setTimer({
                         time: timeEllapsed,
                         runTimer: true
                     });
@@ -33,22 +40,21 @@ const Timer = ({ settings, timer, setTimer }) => {
         return () => clearInterval(timerId);
     }, [timer.runTimer]);
 
-
+    //Countdown time to display calculated from internatl time
+    //Does not inclue warning time in time to display
     const formattedTime = () => {
         let timerTime = settings.timerType === 'count-down' ? 
                             countdownLength - timer.time : 
                             timer.time - settings.warningLength;
 
-        if (settings.timerType === 'count-down' && timerTime > settings.timerStart) {
+        // Show start value while warning timer runs
+        if (settings.timerType === 'count-up' && timerTime < 0) {
+            timerTime = 0;
+        } else if (settings.timerType === 'count-down' && timerTime > settings.timerStart) {
             timerTime = settings.timerStart;
         }
 
         let totalSeconds = Math.round(timerTime / 1000)
-
-        if (totalSeconds < 0) {
-            totalSeconds = 0;
-        }
-
         let minutes = Math.floor(totalSeconds / 60);
         let seconds = totalSeconds % 60;
 

@@ -4,14 +4,16 @@ import axios from 'axios';
 import Expression from './Expression';
 import UserInputForm from './UserInputForm';
 import Message from './Message';
-import Button from './Button';
+import Button from '../Button';
 import './Problem.css';
 
 const API_BASE_URL = "https://mccoolmath.herokuapp.com"
 
+/** Problem component for McCool Math app 
+*/
 const Problem = ({ problem, setProblem, setScore }) => {
     const {skill} = useParams();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const searchParamsStr = searchParams.toString();
 
     const API_URL = `${API_BASE_URL}/${skill}`;
@@ -116,16 +118,16 @@ const Problem = ({ problem, setProblem, setScore }) => {
     const renderButtons = () => {
         switch (problem.status) {
             case null:
-                return <Button role="getAnswer" handleClick={getCorrectAnswer} />
+                return <Button text="Show Answer" type="other" handleClick={getCorrectAnswer} />
             case "incorrect":
                 return (<>
-                    <Button role="getAnswer" handleClick={getCorrectAnswer} />
-                    <Button role="tryAgain" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
+                    <Button text="Show Answer" type="other" handleClick={getCorrectAnswer} />
+                    <Button text="Try Again" type="other" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
                 </>)
             case "correct":
-                return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
+                return <Button text="Next" type="other" refToAccess={newProbBtnRef} handleClick={getProblem} />
             case "showCorrect":
-                return <Button role="newProblem" refToAccess={newProbBtnRef} handleClick={getProblem} />
+                return <Button text="Next" type="other" refToAccess={newProbBtnRef} handleClick={getProblem} />
             default: 
                 return null
         }

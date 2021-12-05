@@ -1,4 +1,4 @@
-// Initial values for McCool Math app
+// Initial values for McCool Math app state
 
 const INITIAL_TIMER_STATE = {
     time: null,

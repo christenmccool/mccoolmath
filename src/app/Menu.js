@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import './Menu.css';
 
 /** Menu component for McCool Math app
- * Provides a link to each skill
+ * Provides a link to each valid skill
+ * URL path and menu display text stored in VALID_SKILLS
  */
 const Menu = () => {
 

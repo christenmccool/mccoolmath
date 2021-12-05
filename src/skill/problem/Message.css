@@ -1,14 +1,13 @@
 .Message-text {
     margin: 0px;
     font-size: 80px;
+    letter-spacing: 0.05em;
 }
 
 .Message-text-correct {
     color: #4B0082;
-    letter-spacing: 0.05em;
 }
 
 .Message-text-incorrect {
     color: #2B7C85;
-    letter-spacing: 0.05em;
 }

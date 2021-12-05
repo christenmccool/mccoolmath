@@ -1,61 +1,43 @@
 import React from 'react';
-import './StartButton.css';
+import Button from './Button';
 
 /** Start Button component for McCool Math app 
  * on "Start": starts timer at zero, resets score and problem
  * on "Stop": stops timer
  * on "Reset": sets timer.time to null, reset score
 */
-const StartButton = ({ timer, setTimer, resetScore, refToAccess }) => {
+const StartButton = ({ timer, startTimer, stopTimer, resetTimer, resetScore, refToAccess }) => {
 
     const buttonText = () => {
-        //Timer is not running and time is at null
         if (timer.runTimer===false && timer.time===null) {
             return "Start";
-        //Timer is not running but time has a value (timer was running)
         } else if (timer.runTimer===false) {
             return "Reset";
-        //Timer is running
         } else {
             return "Stop"
         }
     }
     const handleButtonClick = () => {
-        //"Start": start timer with timer.time at 0, reset score
+        //"Start": start timer at 0, reset score
         if (timer.runTimer===false && timer.time===null) {
             return () => {
-                setTimer({
-                    time: 0,
-                    runTimer: true
-                });
+                startTimer();
                 resetScore();
             }
-        //"Reset": set timer.time to null, reset score
+        //"Reset": set time to null, reset score
         } else if (timer.runTimer===false) {
             return () => {
-                setTimer({
-                    time: null,
-                    runTimer: false
-                });
+                resetTimer();
                 resetScore();
             }
         //"Stop": stop timer 
         } else {
-            return () => {
-                setTimer({
-                    ...timer, 
-                    runTimer: false
-                });
-            }
+            return stopTimer;
         }
     }
 
     return (
-        <div className="StartButton">
-            <button className="Timer-start-btn" type="button" onClick={handleButtonClick()} ref={refToAccess}>
-                {buttonText()}
-            </button>
-        </div>
+        <Button text={buttonText()} type="start" handleClick={handleButtonClick()} refToAccess={refToAccess} />
     )
 }
 

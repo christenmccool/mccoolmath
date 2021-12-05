@@ -2,6 +2,7 @@ import React from 'react';
 import { addStyles, StaticMathField } from 'react-mathquill';
 import './Expression.css'
 
+// Displays the math expression for each problem given the latex expression
 const Expression = ( {latex} ) => {
 
     // Inserts required CSS for MathQuill

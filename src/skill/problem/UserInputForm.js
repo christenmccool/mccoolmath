@@ -1,10 +1,14 @@
 import React, {useState} from 'react';
-import UserInputField from './UserInputField';
-import Button from './Button';
+import { addStyles, EditableMathField } from 'react-mathquill';
+import Button from '../Button';
 import './UserInputForm.css'
 
+//Math input form for user to submit answer
 const UserInputForm = ( {submitUserAnswer, inputFieldRef} ) => {
     const [input, setInput] = useState("");
+
+    // Inserts required CSS for MathQuill
+    addStyles();
 
     const handleKeyDown = (evt) => {
         if (evt.key === 'Enter') {
@@ -23,14 +27,17 @@ const UserInputForm = ( {submitUserAnswer, inputFieldRef} ) => {
 
     return (
         <form className="UserInputForm" onSubmit={handleSubmit}>
-            <UserInputField 
-                handleKeyDown={handleKeyDown}
-                input={input}
-                setInput={setInput}
-                inputFieldRef={inputFieldRef}
-            />
+            <div className="UserInputForm-field" ref={inputFieldRef}>
+                <EditableMathField
+                    className="UserInputForm-input"
+                    latex={input}
+                    onChange={(mathField) => setInput(mathField.latex())}
+                    onKeyDown={handleKeyDown}
+                />
+            </div>
             <Button 
-                role="check"
+                text="Check"
+                type="check" 
             />
         </form>
     )

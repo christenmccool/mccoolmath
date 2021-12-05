@@ -1,5 +1,6 @@
 {
   "name": "mccoolmathv2",
+  "homepage": "https://mccoolmath.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
