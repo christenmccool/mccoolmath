@@ -6,7 +6,7 @@ import Button from './Button';
  * on "Stop": stops timer
  * on "Reset": sets timer.time to null, reset score
 */
-const StartButton = ({ timer, startTimer, stopTimer, resetTimer, resetScore, refToAccess }) => {
+const StartButton = ({ timer, startTimer, stopTimer, resetTimer, resetScore, resetProblem, refToAccess }) => {
 
     const buttonText = () => {
         if (timer.runTimer===false && timer.time===null) {
@@ -18,11 +18,12 @@ const StartButton = ({ timer, startTimer, stopTimer, resetTimer, resetScore, ref
         }
     }
     const handleButtonClick = () => {
-        //"Start": start timer at 0, reset score
+        //"Start": start timer at 0, reset score and problem
         if (timer.runTimer===false && timer.time===null) {
             return () => {
                 startTimer();
                 resetScore();
+                resetProblem();
             }
         //"Reset": set time to null, reset score
         } else if (timer.runTimer===false) {

@@ -4,6 +4,11 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import OptionsTab from './OptionsTab'
 import './Options.css';
 
+/** Options component for McCool Math app 
+ * Allows user to select options for problem to be retreived from API
+ * Maps option to query string to pass to API
+ * Indicates which option is selected
+*/
 const Options = () => {
 
     const {skill} = useParams();
@@ -12,19 +17,19 @@ const Options = () => {
         switch (skill) {
             case "integers":
                 return { opts: [
-                    {opt:'add', text: 'Add', params: {"type":"add"}, paramStr: "type=add"},
-                    {opt:'sub', text: 'Subtract', params: {"type":"sub"}, paramStr: "type=sub"},
-                    {opt:'mult', text: 'Multiply', params: {"type":"mult"}, paramStr: "type=mult"},
-                    {opt:'div', text: 'Divide', params: {"type":"div"}, paramStr: "type=div"},
-                    {opt:'all', text: 'All', params: {"type":"all"}, paramStr: "type=all"}
+                    {opt:'add', text: 'Add', paramStr: "type=add"},
+                    {opt:'sub', text: 'Subtract', paramStr: "type=sub"},
+                    {opt:'mult', text: 'Multiply', paramStr: "type=mult"},
+                    {opt:'div', text: 'Divide', paramStr: "type=div"},
+                    {opt:'all', text: 'All', paramStr: "type=all"}
                 ],
                     default: 'all'
                 } 
             case "orderofops":
                 return { opts: [
-                    {opt:'l1', text: 'Level 1', params: {"n":"3"}, paramStr: "n=3"},
-                    {opt:'l2', text: 'Level 2', params: {"n":"4"}, paramStr: "n=4"},
-                    {opt:'l3', text: 'Level 3', params: {"n":"5"}, paramStr: "n=5"},
+                    {opt:'l1', text: 'Level 1', paramStr: "n=3"},
+                    {opt:'l2', text: 'Level 2', paramStr: "n=4"},
+                    {opt:'l3', text: 'Level 3', paramStr: "n=5"},
                 ],
                     default: 'l2'
                 } 
@@ -53,7 +58,7 @@ const Options = () => {
         if (option.opt === evt.target.id) return;
         const opt = options().opts.find(ele => ele.opt===evt.target.id);
         setOption(opt);
-        setSearchParams(opt.params);
+        setSearchParams(opt.paramStr);
     }
 
     if (!options()) return null;

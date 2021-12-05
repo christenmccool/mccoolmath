@@ -17,16 +17,18 @@ const Message = ({ problem }) => {
     }
 
     const messageText = () => {
-        return problem.status==='correct' ? "Correct!" : "Incorrect";
+        switch (problem.status) {
+            case "correct": return "Correct"
+            case "incorrect": return "Incorrect"
+            default: return null;
+        }
     }
 
     return (
         <div className="Message">
             <Expression latex={latexToDisplay()} />
             
-            {problem.status!=='showCorrect' ? 
-                <h1 className={`Message-text Message-text-${problem.status}`}>{messageText()}</h1> : null
-            }
+            <h1 className={`Message-text Message-text-${problem.status}`}>{messageText()}</h1> 
         </div>
     )
 }

@@ -35,6 +35,7 @@ const Skill = () => {
     const startTimer = () => setTimer({time: 0, runTimer: true});
     const stopTimer = () => setTimer({...timer, runTimer: false});
     const resetTimer = () => setTimer(INITIAL_TIMER_STATE);
+    const resetProblem = () => setProblem(INITIAL_PROB_STATE);
 
     const toggleEditMode = () => {
         setSettings({...settings, editingMode:!settings.editingMode})
@@ -43,7 +44,7 @@ const Skill = () => {
 
     //If number of problem goal is met or countdown timer is complete, display message
     const numProbCompleted = settings.mode==="numProbGoal" && score.correct===settings.goalNumProblems;
-    const countdownCompleted = settings.mode==="countdownGoal" && timer.time>(settings.timerStart + settings.warningLength);
+    const countdownCompleted = settings.mode==="countdownGoal" && timer.time+100>(settings.timerStart + settings.warningLength);
 
     useEffect(() => {
         if (numProbCompleted || countdownCompleted) stopTimer();
@@ -83,13 +84,13 @@ const Skill = () => {
                     <HoldingScreen 
                         text={completedMessage() || "Get Ready!"}
                     /> 
-                    :
-                    <Problem 
-                        problem={problem}
-                        setProblem={setProblem}
-                        setScore={setScore} 
-                    /> 
-                }
+                : null }
+                <Problem 
+                    visible={!completedMessage() && timer.time >= settings.warningLength}
+                    problem={problem}
+                    setProblem={setProblem}
+                    setScore={setScore} 
+                /> 
                 <div className="Skill-warning-timer">
                     <WarningTimer
                         warningLength={settings.warningLength}
@@ -124,6 +125,7 @@ const Skill = () => {
                             stopTimer={stopTimer}
                             resetTimer={resetTimer}
                             resetScore={resetScore}
+                            resetProblem={resetProblem}
                             refToAccess={startButton}
                         /> 
                     </div>
