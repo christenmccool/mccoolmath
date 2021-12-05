@@ -5,6 +5,7 @@
     font-size: 30px;
     border: 1px solid lightgrey;
     border-radius: 3px;
+    cursor: pointer;
 }
 
 .OptionsTab-selected {
