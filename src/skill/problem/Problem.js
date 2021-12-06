@@ -24,6 +24,7 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
     let navigate = useNavigate();
 
     const API_URL = `${API_BASE_URL}/${skill}`;
+    const hideClass = !visible ? "-hide" : "";
 
     const newProbBtnRef = useRef();
     const tryAgainBtnRef = useRef();
@@ -135,35 +136,25 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
         });
     }
 
-    //Render buttons based on problem status
-    const renderButtons = () => {
-        switch (problem.status) {
-            case null:
-                return <Button text="Show Answer" type="other" handleClick={getCorrectAnswer} />
-            case "incorrect":
-                return (<>
-                    <Button text="Show Answer" type="other" handleClick={getCorrectAnswer} />
-                    <Button text="Try Again" type="other" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
-                </>)
-            case "correct":
-                return <Button text="Next" type="other" refToAccess={newProbBtnRef} handleClick={getProblem} />
-            case "showCorrect":
-                return <Button text="Next" type="other" refToAccess={newProbBtnRef} handleClick={getProblem} />
-            default: 
-                return null
+    //Determine button propss based on problem status
+    const buttonProps = () => {
+        if (!problem.status || problem.status === "incorrect") { 
+            return ({text: "Show Answer", onClick: getCorrectAnswer})
+        } else if (problem.status === "correct" || problem.status === "showCorrect") {
+            return ({text: "Next", onClick: getProblem, ref: newProbBtnRef})
         }
     }
 
-    //Display placeholder so component isn't unmounted
-    if (!visible) {
-        return (
-            <div className="Problem"></div>
-        )
-    }
+    // //Display placeholder so component isn't unmounted
+    // if (!visible) {
+    //     return (
+    //         <div className="Problem"></div>
+    //     )
+    // }
 
     return (
         <div className="Problem">
-            <div className="Problem-main">
+            <div className={`Problem-main${hideClass}`}>
                 <Expression latex={problem.latex} />
 
                 {problem.status===null ?
@@ -172,8 +163,12 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
                     <Message problem={problem}/>
                 }
             </div>
-            <div className="Problem-buttons">
-                {renderButtons()}
+            <div className={`Problem-buttons${hideClass}`}>
+                <Button text={buttonProps().text} refToAccess={buttonProps().ref} handleClick={buttonProps().onClick} />
+
+                {problem.status === 'incorrect' ? 
+                    <Button text="Try Again" refToAccess={tryAgainBtnRef} handleClick={handleTryAgain} />
+                : null}
             </div>
         </div>
     )

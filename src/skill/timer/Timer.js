@@ -76,3 +76,5 @@ const Timer = ({ settings, timer, setTimer, setComplete }) => {
 }
 
 export default Timer;
+
+

@@ -19,9 +19,9 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
 
     const initialFormData = {
         mode: settings.mode,
-        min: !currSec && !currMin ? 1 : currMin,
-        sec: currSec,
-        prob: settings.goalNumProblems || 25
+        timerStartMin: !currSec && !currMin ? 1 : currMin,
+        timerStartSec: currSec,
+        goalNumProblems: settings.goalNumProblems || 25
     }
 
     const [formData, setFormData] = useState(initialFormData);
@@ -31,12 +31,12 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
 
     //Display warning if user select 0 min and sec for countdown timer
     useEffect(() => {
-        if (formData.mode==="countdownGoal" && formData.sec===0 && formData.min===0) {
+        if (formData.mode==="countdownGoal" && formData.timerStartMin===0 && formData.timerStartSec===0) {
             setWarning("Countdown timer cannot be zero");
         } else {
             setWarning(null);
         }
-    }, [formData.min, formData.sec, formData.mode])
+    }, [formData.mode, formData.timerStartMin, formData.timerStartSec])
 
     //mode is a string, all other field values are numbers
     const handleFieldChange = (evt) => {
@@ -47,43 +47,32 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
         setFormData({...formData, [name]: value});
     }
     
+    //Updata other settings based on mode choice and submit
     const submitEdits = () => {
-        if (formData.mode==="countdownGoal" && formData.sec===0 && formData.min===0) return;
+        if (formData.mode==="countdownGoal" && formData.timerStartMin === 0 && formData.timerStartSec === 0) return;
 
-        switch (formData.mode) {
-            case "practice":
-                setSettings({
-                    mode: formData.mode, 
-                    timerType: null,
-                    timerStart: null,
-                    warningLength: null,
-                    goalNumProblems: null,
-                    editingMode: false
-                })
-                break;
-            case "numProbGoal":
-                setSettings({
-                    mode: formData.mode, 
-                    timerType: 'count-up',
-                    timerStart: 0,
-                    warningLength: WARNING_LENGTH,
-                    goalNumProblems: formData.prob,
-                    editingMode: false
-                })
-                break;
-            case "countdownGoal":
-                setSettings({
-                    mode: formData.mode, 
-                    timerType: 'count-down',
-                    timerStart: formData.min * 60000 + formData.sec * 1000,
-                    warningLength: WARNING_LENGTH,
-                    goalNumProblems: null,
-                    editingMode: false
-                })
-                break;
-            default:
-                break;
+        let newSettings = {
+            mode: formData.mode, 
+            editingMode: false
+        };
+
+        if (formData.mode === 'practice') {
+            newSettings = {...newSettings,
+                timerType: null,
+                timerStart: null,
+                warningLength: null,
+                goalNumProblems: null,
+            };
+        } else {
+            newSettings.timerType = formData.mode === 'numProbGoal' ? 'count-up' : 'count-down';
+            newSettings.timerStart = formData.mode === 'numProbGoal' ? 0 : 
+                                            formData.timerStartMin * 60000 + formData.timerStartSec * 1000;
+            newSettings.warningLength = WARNING_LENGTH;
+            newSettings.goalNumProblems = formData.mode === 'numProbGoal' ? formData.goalNumProblems : null;
         }
+        
+        setSettings(newSettings);
+
         resetScore();
         resetTimer();
         resetProblem();
@@ -127,8 +116,8 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                     </div>
                     <div>
                         <select 
-                            name="prob" 
-                            value={formData.prob} 
+                            name="goalNumProblems" 
+                            value={formData.goalNumProblems} 
                             onChange={handleFieldChange} 
                             disabled={formData.mode!=='numProbGoal'}
                         >
@@ -158,8 +147,8 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                     </div>
                     <div>
                         <select 
-                            name="min" 
-                            value={formData.min}
+                            name="timerStartMin" 
+                            value={formData.timerStartMin}
                             onChange={handleFieldChange} 
                             disabled={formData.mode!=='countdownGoal'}
                         >
@@ -172,8 +161,8 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                         </select>
                         :
                         <select 
-                            name="sec" 
-                            value={formData.sec}
+                            name="timerStartSec" 
+                            value={formData.timerStartSec}
                             onChange={handleFieldChange} 
                             disabled={formData.mode!=='countdownGoal'}
                         >

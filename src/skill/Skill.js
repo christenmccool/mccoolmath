@@ -39,18 +39,20 @@ const Skill = () => {
     const resetTimer = () => setTimer(INITIAL_TIMER_STATE);
     const resetProblem = () => setProblem(INITIAL_PROB_STATE);
 
-    //Focus on start button before user selects start
+    //Set focus to start button before user selects start
     useEffect(() => {
         if (settings.mode !== "practice" && timer.time === null) {
             startButton.current.focus();
         }
-    }, [settings.mode, timer.time]);
+    }, [settings.mode, timer.time])
 
-    //Stop timer and set complete to false when toggling edit mode
+    //Stop timer and set complete to false when toggling to edit mode
     const toggleEditMode = () => {
+        if (!settings.editingMode) {
+            stopTimer();
+            setComplete(false);
+        }
         setSettings({...settings, editingMode: !settings.editingMode})
-        stopTimer();
-        setComplete(false);
     }
 
     //Check to see if number of problems goal is complete
@@ -92,6 +94,7 @@ const Skill = () => {
             </div>
         )
     }
+    
     //Render if not editing mode
     return (
         <div className="Skill">
