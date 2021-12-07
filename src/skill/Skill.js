@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 
 import ModeForm from './mode/ModeForm';
 import Options from './options/Options';
@@ -10,6 +11,7 @@ import Score from './score/Score';
 import ModeWrapper from './mode/ModeWrapper';
 import StartButton from './StartButton';
 
+import {opts} from './options/opts';
 import { INITIAL_SETTING_STATE, INITIAL_TIMER_STATE, INITIAL_PROB_STATE, INITIAL_SCORE_STATE } from './initialValues';
 import './Skill.css';
 
@@ -24,6 +26,10 @@ import './Skill.css';
  * Renders ModeForm when editing mode
 */
 const Skill = () => {
+    const {skill} = useParams();
+    //Set problem type option to default option for this skill
+    const defaultOpt = opts[skill].find(ele => ele.default);
+    const [option, setOption] = useState(defaultOpt);
 
     const [settings, setSettings] = useState(INITIAL_SETTING_STATE);
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
@@ -33,6 +39,7 @@ const Skill = () => {
 
     const startButton = useRef();
 
+    //Functions passed to components to change state
     const resetScore = () => setScore(INITIAL_SCORE_STATE);
     const startTimer = () => setTimer({time: 0, runTimer: true});
     const stopTimer = () => setTimer({...timer, runTimer: false});
@@ -94,12 +101,15 @@ const Skill = () => {
             </div>
         )
     }
-    
+
     //Render if not editing mode
     return (
         <div className="Skill">
             <div className="Skill-main">
-                <Options />
+                <Options 
+                    option={option}
+                    setOption={setOption}
+                />
                 {completeMessage() || warningTime() > 0 ?
                     <HoldingScreen 
                         text={completeMessage() || "Get Ready!"}
@@ -107,6 +117,7 @@ const Skill = () => {
                 : null }
                 <Problem 
                     visible={!completeMessage() && !warningTime()}
+                    option={option}
                     problem={problem}
                     setProblem={setProblem}
                     setScore={setScore} 

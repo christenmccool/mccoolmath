@@ -13,6 +13,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
 
     const WARNING_LENGTH = 3000;
     
+    //Initialize form to reflect user's current mode
     const currTotalSec = settings.timerStart ? Math.round(settings.timerStart / 1000) : 0;
     const currMin = Math.floor(currTotalSec / 60);
     const currSec = currTotalSec % 60;
@@ -70,7 +71,7 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
             newSettings.warningLength = WARNING_LENGTH;
             newSettings.goalNumProblems = formData.mode === 'numProbGoal' ? formData.goalNumProblems : null;
         }
-        
+
         setSettings(newSettings);
 
         resetScore();

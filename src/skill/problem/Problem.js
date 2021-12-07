@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { opts } from '../options/opts';
 import axios from 'axios';
 import Expression from './Expression';
 import UserInputForm from './UserInputForm';
@@ -17,7 +18,7 @@ const API_BASE_URL = "https://mccoolmath.herokuapp.com"
  * If visible is false, problem is not displayed
  * This prevents the componet from needing to unmount
 */
-const Problem = ({ visible, problem, setProblem, setScore }) => {
+const Problem = ({ visible, option, problem, setProblem, setScore }) => {
     const {skill} = useParams();
     const [searchParams] = useSearchParams();
     const searchParamsStr = searchParams.toString();
@@ -30,10 +31,11 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
     const tryAgainBtnRef = useRef();
     const inputFieldRef = useRef();
 
-    //Include query string in API call if given
+    //Map option to query string for API call 
     useEffect(() => {
-        if (searchParamsStr==="") return;
-        const url = `${API_URL}?${searchParamsStr}`;
+        if (!searchParamsStr) return;
+        const apiParamsStr = option && option.apiParamsStr ? `?${option.apiParamsStr}` : "";
+        const url = `${API_URL}${apiParamsStr}`;
         axios.get(url)
         .then(resp => setProblem({...resp.data, 
                         userAnswer: null,
@@ -45,7 +47,7 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
             console.log(err);
             navigate("/");
         });
-    }, [searchParams]);
+    }, [option]);
 
     //Get new problem from API if latex is null
     useEffect(() => {
@@ -144,13 +146,6 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
             return ({text: "Next", onClick: getProblem, ref: newProbBtnRef})
         }
     }
-
-    // //Display placeholder so component isn't unmounted
-    // if (!visible) {
-    //     return (
-    //         <div className="Problem"></div>
-    //     )
-    // }
 
     return (
         <div className="Problem">

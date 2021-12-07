@@ -1,9 +1,38 @@
-.Options {    
-    width: 99%;
+.Options-dropdown {  
+    display: block;  
+    width: 100%;
     margin: 0px auto 10px auto;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
+.Options-dropdown select {    
+    width: 100%;
+    height: 40px;
+    background-color: #FCFCFC;
+    font-size: 30px;
+    text-align: center;
+    background-color: darkgrey;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 5px lightgrey;
+}
+
+.Options-buttons {
+    display: none;
+}
+
+
+@media (min-width: 1024px) {
+    .Options-buttons {    
+        width: 99%;
+        margin: 0px auto 10px auto;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .Options-dropdown {
+        display: none;
+    }
+
+}
+    

@@ -5,39 +5,44 @@ import OptionsTab from './OptionsTab';
 import './Options.css';
 
 /** Options component for McCool Math app 
- * Allows user to select options for problem to be retrieved from API
- * Maps option to query string to pass to API
- * Indicates which option is selected
- * Return null if no options for a particular skill
+ * Allows user to select options for skill
+ * Maps option to query string
+ * Renders series of buttons or dropdown for mobile 
+ * Return null if no options for a skill
 */
-const Options = () => {
+const Options = ({ option, setOption }) => {
 
     const {skill} = useParams();
     const options = opts[skill];
 
-    //Set option to default option
     const [searchParams, setSearchParams] = useSearchParams();
-    let defaultOpt = null;
-    if (options) {
-        const defaultName = options.default;
-        defaultOpt = options.opts.find(ele => ele.opt===defaultName);
-    }
-    const [option, setOption] = useState(defaultOpt);
+    // const [option, setOption] = useState(null);
 
-    //Set option to query string, if provided
+    //Set option to query string
+    //If query string doesn't match an option. set to empty string
     useEffect(() => {
         if (!options) return;
-        if (searchParams.toString() !== "") {
-            let paramOpt = options.opts.find(ele => ele.paramStr===searchParams.toString());
-            setOption(paramOpt);
+        let opt = options.find(ele => ele.paramStr===searchParams.toString());
+        if (opt) {
+            setOption(opt);
+        } else {
+            setSearchParams("");
         }
     }, [searchParams])
 
-    //Select option based on user click of Option Tab
+    //Set query string based on user click of Option Tab
+    //Sets option in useEffect hook on searchParams
     const handleClick = (evt) => {
-        if (option.opt === evt.target.id) return;
-        const opt = options.opts.find(ele => ele.opt===evt.target.id);
-        setOption(opt);
+        if (option.name === evt.target.id) return;
+        const opt = options.find(ele => ele.name===evt.target.id);
+        setSearchParams(opt.paramStr);
+    }
+
+    //Select option based on user click of Option Tab
+    //Sets option in useEffect hook on searchParams
+    const handleChange = (evt) => {
+        if (option.name === evt.target.value) return;
+        const opt = options.find(ele => ele.name===evt.target.value);
         setSearchParams(opt.paramStr);
     }
 
@@ -45,17 +50,33 @@ const Options = () => {
         
     return (
         <div className="Options">
-            {options.opts.map(ele => {
-                return (
-                    <OptionsTab 
-                        key={ele.opt} 
-                        id={ele.opt} 
-                        selected={option.opt===ele.opt ? true : false}
-                        text={ele.text} 
-                        handleClick={handleClick} 
-                    />
-                )
-            })}
+            <div className="Options-buttons">
+                {options.map(ele => {
+                    return (
+                        <OptionsTab 
+                            key={ele.name} 
+                            id={ele.name} 
+                            selected={option&&option.name===ele.name ? true : false}
+                            text={ele.text} 
+                            handleClick={handleClick} 
+                        />
+                    )
+                })}
+            </div>
+            <div className="Options-dropdown">
+                <select name="option" value={option&&option.name} onChange={handleChange} >
+                    {options.map(ele => {
+                        return (
+                            <option
+                                key={ele.name} 
+                                value={ele.name} 
+                            >
+                                {ele.text}
+                            </option>
+                        )
+                    })}
+                </select>
+            </div>
         </div>
     )
 }
