@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { opts } from '../options/opts';
+import confetti from '../confetti.gif';
 import axios from 'axios';
 import Expression from './Expression';
 import UserInputForm from './UserInputForm';
@@ -26,6 +26,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
 
     const API_URL = `${API_BASE_URL}/${skill}`;
     const hideClass = !visible ? "-hide" : "";
+    const confettiClass = problem.status === 'correct' ? "Problem-confetti" : "Problem-no-confetti";
 
     const newProbBtnRef = useRef();
     const tryAgainBtnRef = useRef();
@@ -150,6 +151,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
     return (
         <div className="Problem">
             <div className={`Problem-main${hideClass}`}>
+                <img className={confettiClass} src={confetti} alt="confetti" />
                 <Expression latex={problem.latex} />
 
                 {problem.status===null ?

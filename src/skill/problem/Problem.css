@@ -3,6 +3,7 @@
     height: 450px;
     margin: 0px auto;
     padding: 45px 10px;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -16,6 +17,15 @@
 
 .Problem-main-hide, .Problem-buttons-hide {
     display: none;
+}
+
+.Problem-no-confetti {
+    display: none;
+}
+
+.Problem-confetti {
+    position: absolute;
+    display: block;
 }
 
 .Problem-buttons {

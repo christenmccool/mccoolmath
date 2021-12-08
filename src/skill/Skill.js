@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-
+import { useParams, useSearchParams } from 'react-router-dom';
 import ModeForm from './mode/ModeForm';
 import Options from './options/Options';
 import HoldingScreen from './HoldingScreen';
@@ -20,16 +19,18 @@ import './Skill.css';
  * - Practice: no timer
  * - Number of problems goal: complete selected number of problems with countup timer
  * - Countdown goal: complete max problems given countdown timer
- * Timer components only display during goal modes
+ * Timer components display during goal modes (not practice)
  * Score and current mode displayed for all modes
  * Display message when goal is completed
  * Renders ModeForm when editing mode
 */
 const Skill = () => {
     const {skill} = useParams();
-    //Set problem type option to default option for this skill
-    const defaultOpt = opts[skill].find(ele => ele.default);
-    const [option, setOption] = useState(defaultOpt);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    //Set problem type option accoreding to query string or default option 
+    const opt = opts[skill].find(ele => ele.paramStr === searchParams.toString()) || opts[skill].find(ele => ele.default);
+    const [option, setOption] = useState(opt);
 
     const [settings, setSettings] = useState(INITIAL_SETTING_STATE);
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
@@ -110,11 +111,13 @@ const Skill = () => {
                     option={option}
                     setOption={setOption}
                 />
+
                 {completeMessage() || warningTime() > 0 ?
                     <HoldingScreen 
                         text={completeMessage() || "Get Ready!"}
                     /> 
                 : null }
+
                 <Problem 
                     visible={!completeMessage() && !warningTime()}
                     option={option}
@@ -122,6 +125,7 @@ const Skill = () => {
                     setProblem={setProblem}
                     setScore={setScore} 
                 /> 
+
                 {timer.time !== null ?
                     <>
                         <div className="Skill-warning-timer">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import {opts} from './opts';
 import OptionsTab from './OptionsTab';
@@ -18,31 +18,22 @@ const Options = ({ option, setOption }) => {
     const [searchParams, setSearchParams] = useSearchParams();
     // const [option, setOption] = useState(null);
 
-    //Set option to query string
-    //If query string doesn't match an option. set to empty string
-    useEffect(() => {
-        if (!options) return;
-        let opt = options.find(ele => ele.paramStr===searchParams.toString());
-        if (opt) {
-            setOption(opt);
-        } else {
-            setSearchParams("");
-        }
-    }, [searchParams])
 
-    //Set query string based on user click of Option Tab
-    //Sets option in useEffect hook on searchParams
+    //Set option based on user click of Option Tab
+    //Set query string to reflect selected option
     const handleClick = (evt) => {
         if (option.name === evt.target.id) return;
-        const opt = options.find(ele => ele.name===evt.target.id);
+        const opt = options.find(ele => ele.name === evt.target.id);
+        setOption(opt);
         setSearchParams(opt.paramStr);
     }
 
-    //Select option based on user click of Option Tab
-    //Sets option in useEffect hook on searchParams
+    //Set option based on user selection in dropdown
+    //Set query string to reflect selected option
     const handleChange = (evt) => {
         if (option.name === evt.target.value) return;
-        const opt = options.find(ele => ele.name===evt.target.value);
+        const opt = options.find(ele => ele.name === evt.target.value);
+        setOption(opt);
         setSearchParams(opt.paramStr);
     }
 
@@ -56,15 +47,16 @@ const Options = ({ option, setOption }) => {
                         <OptionsTab 
                             key={ele.name} 
                             id={ele.name} 
-                            selected={option&&option.name===ele.name ? true : false}
+                            selected={option&&option.name === ele.name ? true : false}
                             text={ele.text} 
                             handleClick={handleClick} 
                         />
                     )
                 })}
             </div>
+
             <div className="Options-dropdown">
-                <select name="option" value={option&&option.name} onChange={handleChange} >
+                <select name="option" value={option && option.name} onChange={handleChange} >
                     {options.map(ele => {
                         return (
                             <option
