@@ -6,12 +6,13 @@ import Expression from './Expression';
 import UserInputForm from './UserInputForm';
 import Message from './Message';
 import Button from '../Button';
+
 import './Problem.css';
 
 const API_BASE_URL = "https://mccoolmath.herokuapp.com"
 
 /** Problem component for McCool Math app 
- * Retrieves problemm atching skill name and optional query string from McCool Math API 
+ * Retrieves problem matching skill name and optional query string from McCool Math API 
  * Display math latex expression from API and user input form for submitting answer
  * Displays message after submitting answer or requesting correct answer 
  * 
@@ -46,7 +47,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
         }))
         .catch(err => {
             console.log(err);
-            navigate("/");
+            navigate("/error");
         });
     }, [option]);
 
@@ -58,7 +59,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
         .then(resp => setProblem({...problem, ...resp.data}))
         .catch(err => {
             console.log(err);
-            navigate("/");
+            navigate("/error");
         });
     }, [problem.latex]);
 
@@ -127,7 +128,10 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
             });
             setScore(score => ({correct: score.correct, attempts: score.attempts + 1}));
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err);
+            navigate("/error");
+        });
     }
 
     //Set status and user answer to null when trying again on the same problem

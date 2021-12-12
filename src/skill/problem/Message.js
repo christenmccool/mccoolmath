@@ -6,7 +6,7 @@ import './Message.css'
  * Either displays uswer answer or correct answer
  * If user submitted their answer, displays status (correct or incorrect)
 */
-const Message = ({ problem }) => {
+const Message = ({ problem, isGraphing }) => {
 
     //user or correct answer to display in math field
     const latexToDisplay = () => {
@@ -26,7 +26,10 @@ const Message = ({ problem }) => {
 
     return (
         <div className="Message">
-            <Expression latex={latexToDisplay()} />
+            {!(isGraphing && problem.args.type!=="equation") ?
+                <Expression latex={latexToDisplay()} />
+                : null
+            }
             
             <h1 className={`Message-text Message-text-${problem.status}`}>{messageText()}</h1> 
         </div>

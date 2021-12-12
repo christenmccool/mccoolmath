@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Menu from './Menu';
 import Skill from '../skill/Skill';
 import NotFound from './NotFound';
+import Error from './Error';
 
 
 /** Routes component for McCool Math app
@@ -16,6 +17,7 @@ const AppRoutes = () => {
             <Route path="/" element={<Menu />}/>
             <Route path="/skills/:skill" element={<Skill />} />
             <Route path="/404" element={<NotFound />} />
+            <Route path="/error" element={<Error />} />
             <Route path="*" element={<Navigate replace to="/404" />} />
         </Routes>
     )

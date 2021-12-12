@@ -4,8 +4,10 @@ import Button from '../Button';
 import './UserInputForm.css'
 
 //Math input form for user to submit answer
-const UserInputForm = ( {submitUserAnswer, inputFieldRef} ) => {
+const UserInputForm = ( {submitUserAnswer, inputFieldRef, isGraphing} ) => {
     const [input, setInput] = useState("");
+
+    const componentClass = isGraphing ? `-graphing` : "";
 
     // Inserts required CSS for MathQuill
     addStyles();
@@ -27,9 +29,9 @@ const UserInputForm = ( {submitUserAnswer, inputFieldRef} ) => {
 
     return (
         <form className="UserInputForm" onSubmit={handleSubmit}>
-            <div className="UserInputForm-field" ref={inputFieldRef}>
+            <div className={`UserInputForm-field${componentClass}`} ref={inputFieldRef}>
                 <EditableMathField
-                    className="UserInputForm-input"
+                    className={`UserInputForm-input${componentClass}`}
                     latex={input}
                     onChange={(mathField) => setInput(mathField.latex())}
                     onKeyDown={handleKeyDown}

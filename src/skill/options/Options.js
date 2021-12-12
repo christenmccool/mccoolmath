@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import {opts} from './opts';
+import {opts} from '../../app/opts';
 import OptionsTab from './OptionsTab';
 import './Options.css';
 
@@ -16,8 +16,6 @@ const Options = ({ option, setOption }) => {
     const options = opts[skill];
 
     const [searchParams, setSearchParams] = useSearchParams();
-    // const [option, setOption] = useState(null);
-
 
     //Set option based on user click of Option Tab
     //Set query string to reflect selected option

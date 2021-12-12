@@ -10,7 +10,8 @@ const Menu = () => {
 
     const VALID_SKILLS = {
         "integers": "Integer Operations", 
-        "orderofops": "Order of Operations"
+        "orderofops": "Order of Operations", 
+        "lineareqn": "Linear Equations"
     }
 
     return (

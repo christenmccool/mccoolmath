@@ -4,13 +4,14 @@ import ModeForm from './mode/ModeForm';
 import Options from './options/Options';
 import HoldingScreen from './HoldingScreen';
 import Problem from './problem/Problem';
+import GraphingProblem from './problem/GraphingProblem';
 import Timer from './timer/Timer';
 import WarningTimer from './timer/WarningTimer';
 import Score from './score/Score';
 import ModeWrapper from './mode/ModeWrapper';
 import StartButton from './StartButton';
 
-import {opts} from './options/opts';
+import {opts} from '../app/opts';
 import { INITIAL_SETTING_STATE, INITIAL_TIMER_STATE, INITIAL_PROB_STATE, INITIAL_SCORE_STATE } from './initialValues';
 import './Skill.css';
 
@@ -24,13 +25,18 @@ import './Skill.css';
  * Display message when goal is completed
  * Renders ModeForm when editing mode
 */
+
+const GRAPHING_SKILLS = ["lineareqn"];
+
 const Skill = () => {
     const {skill} = useParams();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
     //Set problem type option accoreding to query string or default option 
     const opt = opts[skill].find(ele => ele.paramStr === searchParams.toString()) || opts[skill].find(ele => ele.default);
     const [option, setOption] = useState(opt);
+
+    const isGraphing = GRAPHING_SKILLS.includes(skill);
 
     const [settings, setSettings] = useState(INITIAL_SETTING_STATE);
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
@@ -118,13 +124,24 @@ const Skill = () => {
                     /> 
                 : null }
 
-                <Problem 
-                    visible={!completeMessage() && !warningTime()}
-                    option={option}
-                    problem={problem}
-                    setProblem={setProblem}
-                    setScore={setScore} 
-                /> 
+                {/* {isGraphing ? */}
+                    <GraphingProblem 
+                        visible={!completeMessage() && !warningTime()}
+                        isGraphing={isGraphing}
+                        option={option}
+                        problem={problem}
+                        setProblem={setProblem}
+                        setScore={setScore} 
+                    /> 
+                    {/* :
+                    <Problem 
+                        visible={!completeMessage() && !warningTime()}
+                        option={option}
+                        problem={problem}
+                        setProblem={setProblem}
+                        setScore={setScore} 
+                    /> 
+                } */}
 
                 {timer.time !== null ?
                     <>
