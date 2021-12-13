@@ -8,7 +8,6 @@ import Message from './Message';
 import Button from '../Button';
 import confetti from '../confetti.gif';
 
-import {solutionTableDef, userTableDef, lineDef} from './graph/calcDef';
 import './GraphingProblem.css';
 
 // const API_BASE_URL = "https://mccoolmath.herokuapp.com"
@@ -47,12 +46,6 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
         getProblem();
     }, [option]);
 
-    //Get new problem from API if problem.args is null
-    //Return without calling API if it is a graphing problem but the calculator hasn't been set yet
-    useEffect(() => {
-        if (problem.args || (isGraphing && !calculator)) return;
-        getProblem();
-    }, [problem.args, calculator]);
 
     //Set focus on desired button or input field
     useEffect(() => {
@@ -68,16 +61,8 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
     }, [visible, problem.status, problem.args])
 
     //Get new problem from API
-    //Resets problem object as well as calculator object
+    //Resets problem object 
     const getProblem = () => {
-
-        if (calculator) {
-            calculator.setExpression({...solutionTableDef});
-            calculator.setExpression({...userTableDef});
-            calculator.setExpression({...lineDef});
-        }
-        setWarning(null);
-
         const apiParamsStr = option && option.apiParamsStr ? `?${option.apiParamsStr}` : "";
         const url = `${API_URL}${apiParamsStr}`;
 
@@ -89,18 +74,6 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
                 status: null,
                 previousUserAnswers: []
             })
-
-            //For an equation graphing problem, graph line using points obtained from API
-            //Set solution points but do not display them
-            if (calculator && resp.data.args.type === 'equation') {
-                const xCoords = resp.data.args.points[0];
-                const yCoords = resp.data.args.points[1];
-                setSolutionTable(xCoords, yCoords, true);
-
-                const m = (yCoords[1] - yCoords[0])/(xCoords[1] - xCoords[0]);
-                const b = yCoords[0] - m * xCoords[0];
-                calculator.setExpression({id:'line', latex: `${m}x+${b}`});
-            }
         })
         .catch(err => {
             console.log(err);
@@ -125,19 +98,6 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
                 status: 'showCorrect'
             });
 
-            //For a graphing problem of type graph, graph points and line obtained from API
-            if (isGraphing && problem.args.type === "graph") {
-                const xCoords = resp.data.correctAnswer[0];
-                const yCoords = resp.data.correctAnswer[1];
-                setSolutionTable(xCoords, yCoords, false);
-                calculator.setExpression({id:'line', latex: problem.latex});
-            }
-            //For a graphing problem of type equation, display points on line
-            if (isGraphing && problem.args.type ==="equation") {
-                const solutionTable = calculator.getExpressions().find(obj => obj['id'] === 'solutionTable');
-                solutionTable.columns[1].hidden = false;
-                calculator.setExpression(solutionTable);
-            }
             setScore(score => ({correct: score.correct, attempts: score.attempts + 1}));
         })
         .catch(err => {
@@ -146,24 +106,12 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
         });
     }
 
-    //Set solution table to include given array of x coordinates and array for y coordinates
-    const setSolutionTable = (xCoords, yCoords, hidden) => {
-        const solutionTableCopy = {...solutionTableDef};
-        const solutionTableColXCopy = {...solutionTableDef.columns[0]};
-        const solutionTableColYCopy = {...solutionTableDef.columns[1]};
-    
-        solutionTableColXCopy.values =  xCoords;
-        solutionTableColYCopy.values =  yCoords;
-        solutionTableColYCopy.hidden =  hidden;
-        solutionTableCopy.columns = [solutionTableColXCopy, solutionTableColYCopy];
-        calculator.setExpression(solutionTableCopy);
-    }
-
     //Post user answer to API
     //API returns status (correct or incorrect) as response
     //Update score based on status
     const submitUserAnswer = (userAnswer=null) => {
         let userPoints;
+        
         if (isGraphing && problem.args.type === "graph") {
             const userTable = calculator.getExpressions().find(obj => obj['id'] === 'userTable');
 
@@ -175,31 +123,22 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
             }
             userPoints  = [userTable.columns[0].values, userTable.columns[1].values];
         }
-
         const answer = userPoints || userAnswer;
 
         axios.post(API_URL, {   
             problemType: problem.problemType,
             args: problem.args,
-            answer,
+             answer,
             returnAnswer: true
         })
         .then(resp => {
             setProblem({...problem, 
                 ...resp.data, 
-                answer,
+                userAnswer:answer,
                 previousUserAnswers:[...problem.previousUserAnswers, answer]
             });
 
             if (resp.data.status === 'correct') {
-                //For a graphing problem of type graph, graph points and line obtained from API
-                if (isGraphing && problem.args.type === "graph") {
-                    const xCoords = resp.data.correctAnswer[0];
-                    const yCoords = resp.data.correctAnswer[1];
-                    setSolutionTable(xCoords, yCoords, false);
-                    calculator.setExpression({id:'line', latex: problem.latex});
-                }
-
                 const correct = resp.data.status === 'correct' ? 1 : 0;
                 setScore(score => ({correct: score.correct + correct, attempts: score.attempts + 1}));
             }
@@ -207,17 +146,12 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
         .catch(err => console.log(err));
     }
 
-
     //Set status and user answer to null when trying again on the same problem
-    //Will not trigger call to API
     const handleTryAgain = () => {
         setProblem({...problem, 
             status: null,
             userAnswer: null        
         });
-        if (calculator) {
-            calculator.setExpression({...userTableDef});
-        }
     }
 
     //Determine button propss based on problem status
@@ -238,7 +172,12 @@ const GraphingProblem = ({ visible, isGraphing, option, problem, setProblem, set
                 <Expression latex={problem.latex} isGraphing={isGraphing}/>
 
                 {isGraphing ? 
-                    <Graph calculator={calculator} setCalculator={setCalculator} />
+                    <Graph 
+                        calculator={calculator} 
+                        setCalculator={setCalculator} 
+                        setWarning={setWarning}
+                        problem={problem}
+                    />
                     : 
                     null
                 }

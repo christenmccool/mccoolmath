@@ -26,7 +26,7 @@ const Message = ({ problem, isGraphing }) => {
 
     return (
         <div className="Message">
-            {!(isGraphing && problem.args.type!=="equation") ?
+            {!(isGraphing && problem.args.type==="graph") ?
                 <Expression latex={latexToDisplay()} />
                 : null
             }

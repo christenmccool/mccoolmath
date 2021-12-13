@@ -5,7 +5,7 @@ const solutionTableDef = {
     type: 'table',
     columns: [
         {latex: 'x_2', values: [], pointSize: 15},
-        {latex: 'y_2', values: [], pointSize: 15, color: Desmos.Colors.ORANGE, hidden: true}
+        {latex: 'y_2', values: [], pointSize: 15, color: Desmos.Colors.ORANGE, hidden: false}
     ]
 };
 
@@ -20,4 +20,7 @@ const userTableDef = {
 
 const lineDef = {id: 'line', latex: null, color: Desmos.Colors.PURPLE};
 
-export {solutionTableDef, userTableDef, lineDef};
+const userLineDef = {id: 'userline', latex: null, color: Desmos.Colors.GREEN};
+
+
+export {solutionTableDef, userTableDef, lineDef, userLineDef};

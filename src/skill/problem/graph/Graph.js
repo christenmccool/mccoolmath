@@ -1,17 +1,19 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Desmos from 'desmos';
-import {solutionTableDef, userTableDef, lineDef} from './calcDef';
+import {solutionTableDef, userTableDef, lineDef, userLineDef} from './calcDef';
 
 import './Graph.css';
 
 /** Graph component for McCool Math app 
- * Creates blank tables for user points and solution points
- * Creates blank line for solution line
+ * Initialize with tables for user points, user line, solution points, and solution line
  * 
- * Plots point when user clicks on grid
- * Removes point on subsequent click on same point 
+ * Plots point when user clicks on grid, removes point on subsequent click
+ * Graph type: Automatically connect three points with line
 */
-const Graph = ({ calculator, setCalculator }) => {
+const Graph = ({ calculator, setCalculator, setWarning, problem }) => {
+    //Maintain user points in state in order to connect with line when 3 points are plotted
+    const [userXCoords, setUserXCoords] = useState([]);
+    const [userYCoords, setUserYCoords] = useState([]);
     const wrapperRef = useRef();
 
     //Set up calculator  
@@ -20,16 +22,105 @@ const Graph = ({ calculator, setCalculator }) => {
             {expressions : false, lockViewport : true, settingsMenu: false}
         );
 
-        calc.setExpression({...solutionTableDef});
-        calc.setExpression({...userTableDef});
-        calc.setExpression({...lineDef});
+        calc.setExpression(solutionTableDef);
+        calc.setExpression(userTableDef);
+        calc.setExpression(lineDef);
+        calc.setExpression(userLineDef);
 
         setCalculator(calc);
 
         return () => calc.destroy();
     }, [])
- 
-    //Plot points on graph
+
+    //Reset calculator when problem arguments change  
+    //Graph type: blank graph
+    //Equation type: display problem's line
+    useEffect(() => {
+        if (!calculator) return;
+
+        calculator.setExpression(solutionTableDef);
+        calculator.setExpression(userTableDef);
+        calculator.setExpression(lineDef);
+        calculator.setExpression(userLineDef);
+        setUserXCoords([]);
+        setUserYCoords([]);
+
+        //For an equation problem, use the problem's points to compute line to display
+        //Do not graph points
+        if (calculator && problem.args.type === 'equation') {
+            const xCoords = problem.args.points[0];
+            const yCoords = problem.args.points[1];
+            const m = (yCoords[1] - yCoords[0])/(xCoords[1] - xCoords[0]);
+            const b = yCoords[0] - m * xCoords[0];
+            calculator.setExpression({id:'line', latex: `${m}x+${b}`});
+        }
+    }, [problem.args])
+
+    //When correct answer is submitted or requested, show solution line and points
+    //Reset user points when status is null  
+    useEffect(() => {
+        if (!calculator || problem.status === 'incorrect') return;
+
+        if (problem.status === null) {
+            calculator.setExpression(userLineDef);
+            setUserXCoords([]);
+            setUserYCoords([]);
+            return;
+        } 
+        
+        const solutionXCoords = problem.args.type === "graph" ? problem.correctAnswer[0] : problem.args.points[0];
+        const solutionYCoords = problem.args.type === "graph" ? problem.correctAnswer[1] : problem.args.points[1];
+        setTable('solutionTable', solutionXCoords, solutionYCoords);
+
+        if (problem.args.type === "graph") {
+            calculator.setExpression({id:'line', latex: problem.latex});
+        } 
+
+    }, [problem.status])
+
+    //Sets Desmos calculator userTable to userXCoords and userYCoords stored in state
+    //Graph type: connect points with line once 3 points are plotted
+    //Only straight line allowed
+    useEffect(() => {
+        if (!calculator) return;
+        setTable('userTable', userXCoords, userYCoords);
+
+        if (problem.args.type === 'equation') return;
+
+        setWarning(null);
+        calculator.setExpression({id:'userline', latex: null});
+
+        if (userXCoords.length < 3) return;
+
+        const userM = (userYCoords[1] - userYCoords[0]) / (userXCoords[1] - userXCoords[0]);
+        for (let i = 2; i < userXCoords.length; i++) {
+            const newM = (userYCoords[i] - userYCoords[i-1]) / (userXCoords[i] - userXCoords[i-1]);
+            if (newM !== userM) {
+                setWarning("Points must form a straight line")
+                return;
+            }
+        }
+        const userB = userYCoords[0] - userM * userXCoords[0];
+        calculator.setExpression({id:'userline', latex: `${userM}x+${userB}`});
+
+    }, [userXCoords])  
+    
+    //Helper function to set table to include given array of x coordinates and array for y coordinates 
+    const setTable = (id, xCoords, yCoords, hidden=false) => {
+        const tableCopy = id === 'solutionTable' ? {...solutionTableDef} : {...userTableDef}
+        const tableColX = {...tableCopy.columns[0]};
+        const tableColY = {...tableCopy.columns[1]};
+    
+        tableColX.values =  xCoords;
+        tableColY.values =  yCoords;
+        tableColY.hidden =  hidden;
+        tableCopy.columns = [tableColX, tableColY];
+        calculator.setExpression(tableCopy);
+    }
+
+    //Place user points in state on click
+    //Remove from state on subsequent click
+    //Triggers useEffect to update Desmos calculator userTable
     const plotPoint = (evt) => {
         const calculatorRect = calculator.domChangeDetector.elt.getBoundingClientRect();
     
@@ -41,31 +132,21 @@ const Graph = ({ calculator, setCalculator }) => {
         point.x = Math.round(point.x);
         point.y = Math.round(point.y);
 
-        const userTable = calculator.getExpressions().find(obj => obj['id'] === 'userTable');
-        const xCoords = userTable.columns[0].values;
-        const yCoords = userTable.columns[1].values;
-
         let newPoint = true;
 
-        for (let i = 0; i < xCoords.length; i++) {
-            if (+xCoords[i] === point.x && +yCoords[i] === point.y) {
-                xCoords.splice(i, 1);
-                yCoords.splice(i, 1);
+        for (let ind = 0; ind < userXCoords.length; ind++) {
+            if (userXCoords[ind] === point.x && userYCoords[ind] === point.y) {
+                setUserXCoords(userXCoords.filter((ele, i) => i!==ind));
+                setUserYCoords(userYCoords.filter((ele, i) => i!==ind));
                 newPoint = false;
             } 
         }
     
         if (newPoint) {
-            xCoords.push(point.x);
-            yCoords.push(point.y);
+            setUserXCoords([...userXCoords, point.x]);
+            setUserYCoords([...userYCoords, point.y]);
         }
-
-        userTable.columns[0].values = xCoords;
-        userTable.columns[1].values = yCoords;
-
-        calculator.setExpression(userTable);
     }
-
 
     return (
         <div className="Graph-calculator" ref={wrapperRef} onClick={plotPoint}></div>
