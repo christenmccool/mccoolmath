@@ -20,7 +20,7 @@ const userTableDef = {
 
 const lineDef = {id: 'line', latex: null, color: Desmos.Colors.PURPLE};
 
-const userLineDef = {id: 'userline', latex: null, color: Desmos.Colors.GREEN};
+const userLineDef = {id: 'userLine', latex: null, color: Desmos.Colors.GREEN};
 
 
 export {solutionTableDef, userTableDef, lineDef, userLineDef};

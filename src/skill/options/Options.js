@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import {opts} from '../../app/opts';
+import opts from '../../app/opts';
 import OptionsTab from './OptionsTab';
 import './Options.css';
 
@@ -13,7 +13,7 @@ import './Options.css';
 const Options = ({ option, setOption }) => {
 
     const {skill} = useParams();
-    const options = opts[skill];
+    const options = opts[skill].options;
 
     const [searchParams, setSearchParams] = useSearchParams();
 

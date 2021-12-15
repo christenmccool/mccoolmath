@@ -1,0 +1,28 @@
+.UserInputField, .UserInputField-graphing {
+    text-align: center;
+}
+
+.UserInputField {
+    font-size: 60px;
+}
+
+.UserInputField-graphing {
+    font-size: 40px;
+}
+
+.UserInputField-input, .UserInputField-input-graphing  {
+    height: 80px;
+    border-radius: 5px;
+}
+
+.UserInputField-input {
+    width: 200px;
+}
+
+.UserInputField-input-graphing {
+    width: 300px;
+}
+
+/* .UserInputField-input span {
+    margin: 3px 0px;
+} */

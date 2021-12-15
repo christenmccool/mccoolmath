@@ -13,16 +13,18 @@
 
 .Skill-warning-timer {
     position: absolute;
-    bottom: 100px;
+    bottom: 160px;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .Skill-timer {
-    position: absolute;
-    bottom: 5px;
+    /* position: absolute;
+    bottom: 5px; */
+    /* text-align: center;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%); */
+    margin: 20px auto 0px auto;
 }
 
 .Skill-info {
@@ -42,6 +44,8 @@
 
 @media (min-width: 1024px) {
     .Skill-timer {
+        position: absolute;
+        bottom: 5px;
         right: 20px;
         left: auto;
         transform: none;

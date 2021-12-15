@@ -10,7 +10,7 @@ import './Graph.css';
  * Plots point when user clicks on grid, removes point on subsequent click
  * Graph type: Automatically connect three points with line
 */
-const Graph = ({ calculator, setCalculator, setWarning, problem }) => {
+const Graph = ({ calculator, setCalculator, setWarning, problem, checkBtnRef }) => {
     //Maintain user points in state in order to connect with line when 3 points are plotted
     const [userXCoords, setUserXCoords] = useState([]);
     const [userYCoords, setUserYCoords] = useState([]);
@@ -47,7 +47,7 @@ const Graph = ({ calculator, setCalculator, setWarning, problem }) => {
 
         //For an equation problem, use the problem's points to compute line to display
         //Do not graph points
-        if (calculator && problem.args.type === 'equation') {
+        if (calculator && problem.args && problem.args.type === 'equation') {
             const xCoords = problem.args.points[0];
             const yCoords = problem.args.points[1];
             const m = (yCoords[1] - yCoords[0])/(xCoords[1] - xCoords[0]);
@@ -74,8 +74,8 @@ const Graph = ({ calculator, setCalculator, setWarning, problem }) => {
 
         if (problem.args.type === "graph") {
             calculator.setExpression({id:'line', latex: problem.latex});
+            calculator.setExpression({id:'userLine', latex: null});
         } 
-
     }, [problem.status])
 
     //Sets Desmos calculator userTable to userXCoords and userYCoords stored in state
@@ -85,10 +85,10 @@ const Graph = ({ calculator, setCalculator, setWarning, problem }) => {
         if (!calculator) return;
         setTable('userTable', userXCoords, userYCoords);
 
-        if (problem.args.type === 'equation') return;
+        if (problem.args && problem.args.type === 'equation') return;
 
         setWarning(null);
-        calculator.setExpression({id:'userline', latex: null});
+        calculator.setExpression({id:'userLine', latex: null});
 
         if (userXCoords.length < 3) return;
 
@@ -101,7 +101,8 @@ const Graph = ({ calculator, setCalculator, setWarning, problem }) => {
             }
         }
         const userB = userYCoords[0] - userM * userXCoords[0];
-        calculator.setExpression({id:'userline', latex: `${userM}x+${userB}`});
+        calculator.setExpression({id:'userLine', latex: `${userM}x+${userB}`});
+        checkBtnRef.current.focus();
 
     }, [userXCoords])  
     

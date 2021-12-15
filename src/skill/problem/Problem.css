@@ -1,43 +1,59 @@
 .Problem {
     width: 95%;
-    height: 450px;
+    height: 400px;
     margin: 0px auto;
-    padding: 45px 10px;
-    position: relative;
+    padding: 25px 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
     background-color: white;
     font-size: 50px;
     border-radius: 3px;
     box-shadow: 0 0 10px 5px darkgrey;
 }
 
+.Problem-graphing {
+    padding: 15px 10px;
+    height: 500px;
+}
+
+.Problem-main {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.Problem-graph {
+    position: relative;
+}
+
 .Problem-main-hide, .Problem-buttons-hide {
     display: none;
 }
 
-.Problem-no-confetti {
-    display: none;
+.Problem-calculator {
+    width: 350px;
+    height: 350px;
+    margin: 5px auto;
 }
 
-.Problem-confetti {
-    position: absolute;
-    display: block;
-}
+.Problem-warning {
+    font-size: 30px;
+} 
 
-.Problem-buttons {
+/* .Problem-buttons {
     margin: 0px;
     display: flex;
     flex-direction: column;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1024px) { */
     .Problem-buttons {
+        margin: 0px;
+        display: flex;    
         flex-direction: row;
         gap: 20px;
     }
-}
+/* } */
     
