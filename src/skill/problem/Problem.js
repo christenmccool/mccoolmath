@@ -45,6 +45,7 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
 
     //Get new problem from API if option changes for problem type
     useEffect(() => {
+        if (!searchParamsStr) return;
         getProblem();
     }, [option]);
 
