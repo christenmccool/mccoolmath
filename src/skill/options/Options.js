@@ -2,6 +2,8 @@ import React from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import opts from '../../app/opts';
 import OptionsTab from './OptionsTab';
+import {INITIAL_PROB_STATE} from '../initialValues';
+
 import './Options.css';
 
 /** Options component for McCool Math app 
@@ -10,7 +12,7 @@ import './Options.css';
  * Renders series of buttons or dropdown for mobile 
  * Return null if no options for a skill
 */
-const Options = ({ option, setOption }) => {
+const Options = ({ option, setOption, setProblem }) => {
 
     const {skill} = useParams();
     const options = opts[skill].options;
@@ -19,20 +21,24 @@ const Options = ({ option, setOption }) => {
 
     //Set option based on user click of Option Tab
     //Set query string to reflect selected option
+    //Reset problem
     const handleClick = (evt) => {
         if (option.name === evt.target.id) return;
         const opt = options.find(ele => ele.name === evt.target.id);
         setOption(opt);
         setSearchParams(opt.paramStr);
+        setProblem(INITIAL_PROB_STATE);
     }
 
     //Set option based on user selection in dropdown
     //Set query string to reflect selected option
+    //Reset problem
     const handleChange = (evt) => {
         if (option.name === evt.target.value) return;
         const opt = options.find(ele => ele.name === evt.target.value);
         setOption(opt);
         setSearchParams(opt.paramStr);
+        setProblem(INITIAL_PROB_STATE);
     }
 
     if (!options) return null;

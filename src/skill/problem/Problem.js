@@ -42,16 +42,10 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
     const [calculator, setCalculator] = useState(null);
     const [warning, setWarning] = useState(null);
 
-
-    //Get new problem from API if option changes for problem type
-    useEffect(() => {
-        if (!searchParamsStr) return;
-        getProblem();
-    }, [option]);
-
     //Get new problem from API if no problem in state
     useEffect(() => {
         if (problem.args) return;
+        console.log('calling because of problem.args')
         getProblem();
     }, [problem.args]);
 

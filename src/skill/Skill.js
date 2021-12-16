@@ -31,7 +31,10 @@ const Skill = () => {
     const [searchParams] = useSearchParams();
 
     //Set problem type option accoreding to query string or default option 
-    const opt = opts[skill].options.find(ele => ele.paramStr === searchParams.toString() || ele.name === opts[skill].defaultOption);
+    let opt = opts[skill].options.find(ele => ele.paramStr === searchParams.toString());
+    if (!opt) {
+        opt = opts[skill].options.find(ele => ele.name === opts[skill].defaultOption);
+    }
     const [option, setOption] = useState(opt);
 
     const isGraphing = GRAPHING_SKILLS.includes(skill);
@@ -114,6 +117,7 @@ const Skill = () => {
                 <Options 
                     option={option}
                     setOption={setOption}
+                    setProblem={setProblem}
                 />
 
                 {completeMessage() || warningTime() > 0 ?
