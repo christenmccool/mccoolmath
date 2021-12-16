@@ -8,6 +8,7 @@ const Button = ( {  text, type='other', handleClick=null, refToAccess=null } ) =
         switch (type) {
             case "check": return "Button-btn-check";
             case "start": return "Button-btn-start";
+            case "reset": return "Button-btn-reset";
             case "other": return "Button-btn-other";
             default: return "Button-btn-other";
         }

@@ -14,6 +14,12 @@
 
 }
 
+.Button-btn-reset {
+    padding: 1px 3px;
+    font-size: 15px;
+    color: black;
+}
+
 .Button-btn-other {
     background-color: white;
     color: black;

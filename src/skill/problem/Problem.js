@@ -6,6 +6,7 @@ import Graph from './graph/Graph';
 import UserInputField from './UserInputField';
 import Overlay from './Overlay';
 import Message from './Message';
+import Warning from './Warning';
 import Button from '../Button';
 
 import './Problem.css';
@@ -45,10 +46,8 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
     //Get new problem from API if no problem in state
     useEffect(() => {
         if (problem.args) return;
-        console.log('calling because of problem.args')
         getProblem();
     }, [problem.args]);
-
 
     //Set focus on desired button or input field
     useEffect(() => {
@@ -170,7 +169,8 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
     }
 
     //user or correct answer to display in math field
-    const latexToDisplay = () => {
+    const answerToDisplay = () => {
+        if (isGraphing && problem.latex) return null;
         if (problem.status==='showCorrect') {
             return problem.correctAnswer.toString();
         }
@@ -187,9 +187,9 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
     }
 
     return (
-        <div className={`Problem Problem${componentClass}`}>
+        <div className={`Problem${componentClass}`}>
 
-            <div className={`Problem-main${componentClass} Problem-main${hideClass}`}>
+            <div className={`Problem-main${hideClass}`}>
                
                 <Expression latex={problem.latex} isGraphing={isGraphing}/>
 
@@ -204,7 +204,7 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
                         />
                         {showOverlay ?
                             <Overlay 
-                                problem={problem}
+                                div={<Message problem={problem} isGraphing={true} />} 
                                 setShowOverlay={setShowOverlay}
                             />
                             : 
@@ -218,34 +218,21 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
                 {problem.status === null ?
                     <>
                         {!(isGraphing && problem.latex) ? 
-                            // <Button text="Check" type="check" refToAccess={checkBtnRef} handleClick={submitUserAnswer}/>
-                            // :
                             <UserInputField submitUserAnswer={submitUserAnswer} inputFieldRef={inputFieldRef} isGraphing={isGraphing}/> 
                             :
                             null   
                         }
-                        {/* <Button text="Check" type="check" refToAccess={checkBtnRef} handleClick={submitUserAnswer}/> */}
                     </>
                     :
                     <>
-                        {!(isGraphing && problem.latex) ? 
-                            <>
-                            <Expression latex={latexToDisplay()} isGraphing={isGraphing}/>
-                            {!isGraphing ?
-                                <Message problem={problem} isGraphing={isGraphing}/>
-                                :
-                                null
-                            }
-                            </>
-                            :
-                            null
-                        }
+                        <Expression latex={answerToDisplay()} isGraphing={isGraphing}/>
+                        {!isGraphing ?
+                            <Message problem={problem} />
+                        : null}
                     </>
                 }
 
-                <div className="Problem-warning">
-                    {warning}
-                </div>
+                <Warning text={warning} />
 
             </div>
             <div className={`Problem-buttons${hideClass}`}>

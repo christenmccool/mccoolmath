@@ -5,23 +5,15 @@ import confetti from '../confetti.gif';
 
 import './Overlay.css';
 
-const Overlay = ({ problem, setShowOverlay }) => {
-    const confettiClass = problem.status === 'correct' ? "Overlay-confetti" : "Overlay-no-confetti";
-    
-    const messageText = () => {
-        switch (problem.status) {
-            case "correct": return "Correct"
-            case "incorrect": return "Try Again"
-            default: return null;
-        }
-    }
+//Overlay component displays Message component on top of graph
+//Closes on user click of icon
+const Overlay = ({ div, setShowOverlay }) => {
 
     return (
-        <div className={`Overlay`}>
-            <img className={confettiClass} src={confetti} alt="confetti" />
-            <h1 className={`Overlay-text-${problem.status}`}>
-                {messageText()}
-            </h1>
+        <div className="Overlay">
+            <div className="Overlay-div">
+                {div}
+            </div>
             <span className="Overlay-icon">
                 <FontAwesomeIcon icon={faWindowClose} onClick={() => setShowOverlay(false)} />
             </span>

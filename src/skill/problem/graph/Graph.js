@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Desmos from 'desmos';
+import Button from '../../Button';
 import {solutionTableDef, userTableDef, lineDef, userLineDef} from './calcDef';
 
 import './Graph.css';
@@ -149,8 +150,19 @@ const Graph = ({ calculator, setCalculator, setWarning, problem, checkBtnRef }) 
         }
     }
 
+    const clearUserPoints = () => {
+        calculator.setExpression(userTableDef);
+        setUserXCoords([]);
+        setUserYCoords([]);
+    }
+
     return (
-        <div className="Graph-calculator" ref={wrapperRef} onClick={plotPoint}></div>
+        <div className="Graph">
+            <div className="Graph-calculator" ref={wrapperRef} onClick={plotPoint}></div>
+            <div className="Graph-button">
+                <Button text="Clear" type="reset" handleClick={clearUserPoints} />
+            </div>
+        </div>
     )
 }
 

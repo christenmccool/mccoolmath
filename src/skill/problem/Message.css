@@ -1,10 +1,15 @@
 .Message-text {
     margin: 0px;
-    font-size: 80px;
     letter-spacing: 0.05em;
 }
 
 .Message-text-correct {
+    font-size: 80px;
+    color: #4B0082;
+}
+
+.Message-text-correct-graphing {
+    font-size: 70px;
     color: #4B0082;
 }
 
@@ -14,20 +19,34 @@
     color: #2B7C85;
 }
 
-.Message-no-confetti {
+.Message-text-incorrect-graphing {
+    font-weight: normal;
+    font-size: 60px;
+    color: #2B7C85;
+}
+
+.Message-no-confetti, .Message-no-confetti-graphing {
     display: none;
 }
 
-.Message-confetti {
+.Message-confetti, .Message-confetti-graphing {
     position: absolute;
+    z-index: 1;
     left: 10px;
     right: 0px;
     margin-left: auto;
     margin-right: auto;
-    z-index: 1;
     display: block;
     width: 350px;
     height: 100px;
     object-fit: cover;
     overflow: hidden;
+}
+
+.Message-confetti-graphing {
+    top: 10px;
+    left: -40px;
+    right: 0px;
+    width: 270px;
+    height: 70px;
 }

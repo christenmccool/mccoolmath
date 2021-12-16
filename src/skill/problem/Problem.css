@@ -1,4 +1,4 @@
-.Problem {
+.Problem, .Problem-graphing {
     width: 95%;
     height: 400px;
     margin: 0px auto;
@@ -22,14 +22,15 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-}
-
-.Problem-graph {
-    position: relative;
+    display: relative
 }
 
 .Problem-main-hide, .Problem-buttons-hide {
     display: none;
+}
+
+.Problem-graph {
+    position: relative;
 }
 
 .Problem-calculator {
@@ -37,10 +38,6 @@
     height: 350px;
     margin: 5px auto;
 }
-
-.Problem-warning {
-    font-size: 30px;
-} 
 
 /* .Problem-buttons {
     margin: 0px;
