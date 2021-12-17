@@ -96,33 +96,55 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
     //Post user answer to API
     //API returns status (correct or incorrect) as response
     //Update score based on status
-    const submitUserAnswer = (userAnswer=null) => {
-        let userPoints;
-
-        if (isGraphing && problem.args.type === "graph") {
-            const userTable = calculator.getExpressions().find(obj => obj['id'] === 'userTable');
-
-            if (userTable.columns[0].values.length < 3) {
-                setWarning("Plot at least 3 points.")
-                return;
-            } else {
-                setWarning(null);
-            }
-            userPoints  = [userTable.columns[0].values, userTable.columns[1].values];
-        }
-        const answer = userPoints || userAnswer;
-
+    const submitUserAnswer = (userAnswer) => {
         axios.post(API_URL, {   
             problemType: problem.problemType,
             args: problem.args,
-             answer,
+            answer: userAnswer,
             returnAnswer: true
         })
         .then(resp => {
             setProblem({...problem, 
                 ...resp.data, 
-                userAnswer:answer,
-                previousUserAnswers:[...problem.previousUserAnswers, answer]
+                userAnswer,
+                previousUserAnswers:[...problem.previousUserAnswers, userAnswer]
+            });
+
+            if (resp.data.status === 'correct') {
+                const correct = resp.data.status === 'correct' ? 1 : 0;
+                setScore(score => ({correct: score.correct + correct, attempts: score.attempts + 1}));
+            }
+        })
+        .catch(err => console.log(err));
+
+        setShowOverlay(true);
+    }
+
+    //Post user answer to API when in the form of points stored in the calculator's userTable
+    //API returns status (correct or incorrect) as response
+    //Update score based on status
+    const submitUserPoints = () => {
+        const userTable = calculator.getExpressions().find(obj => obj['id'] === 'userTable');
+
+        if (userTable.columns[0].values.length < 3) {
+            setWarning("Plot at least 3 points.")
+            return;
+        } else {
+            setWarning(null);
+        }
+        const userPoints  = [userTable.columns[0].values, userTable.columns[1].values];
+
+        axios.post(API_URL, {   
+            problemType: problem.problemType,
+            args: problem.args,
+            answer: userPoints,
+            returnAnswer: true
+        })
+        .then(resp => {
+            setProblem({...problem, 
+                ...resp.data, 
+                userAnswer: userPoints,
+                previousUserAnswers:[...problem.previousUserAnswers, userPoints]
             });
 
             if (resp.data.status === 'correct') {
@@ -237,7 +259,13 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
             </div>
             <div className={`Problem-buttons${hideClass}`}>
                 {problem.status === null ?
-                    <Button text="Check" type="check" refToAccess={checkBtnRef} handleClick={submitUserAnswer}/>
+                    <>
+                    {!(isGraphing && problem.latex) ?
+                        <Button text="Check" type="check" formId="check-answer-form" refToAccess={checkBtnRef} />
+                        :
+                        <Button text="Check" type="check" refToAccess={checkBtnRef} handleClick={submitUserPoints} />
+                    }
+                    </>
                 : null}
 
                 <Button text={buttonProps().text} refToAccess={buttonProps().ref} handleClick={buttonProps().onClick} />

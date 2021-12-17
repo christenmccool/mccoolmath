@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { addStyles, EditableMathField } from 'react-mathquill';
-import './UserInputField.css'
+import './UserInputField.css';
 
 //Editable math input field for user to type answer
 const UserInputField = ( {submitUserAnswer, inputFieldRef, isGraphing} ) => {
@@ -27,14 +27,14 @@ const UserInputField = ( {submitUserAnswer, inputFieldRef, isGraphing} ) => {
     }    
 
     return (
-        <div className={`UserInputField${componentClass}`} ref={inputFieldRef}>
+        <form className={`UserInputField${componentClass}`} id="check-answer-form" ref={inputFieldRef} onSubmit={handleSubmit}>
             <EditableMathField
                 className={`UserInputField-input${componentClass}`}
                 latex={input}
                 onChange={(mathField) => setInput(mathField.latex())}
                 onKeyDown={handleKeyDown}
             />
-        </div>
+        </form>
     )
 }
 
