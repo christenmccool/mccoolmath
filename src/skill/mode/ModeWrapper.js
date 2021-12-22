@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
 import './ModeWrapper.css';
 
-// Renders mode display and icon to toggle edit mode
+// Renders mode description and icon to toggle edit mode
 const ModeWrapper = ( {settings, toggleEditMode} ) => {
     return (
         <div className="ModeWrapper">

@@ -1,6 +1,7 @@
 import React from 'react';
 import './OptionsTab.css';
 
+//Tab to provide option choices
 const OptionsTab = ({ id, selected, text, handleClick }) => {
     const buttonClass = selected ? "OptionsTab-selected" : "";
 

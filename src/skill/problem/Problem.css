@@ -39,18 +39,11 @@
     margin: 5px auto;
 }
 
-/* .Problem-buttons {
+.Problem-buttons {
     margin: 0px;
-    display: flex;
-    flex-direction: column;
+    display: flex;    
+    flex-direction: row;
+    gap: 20px;
 }
 
-@media (min-width: 1024px) { */
-    .Problem-buttons {
-        margin: 0px;
-        display: flex;    
-        flex-direction: row;
-        gap: 20px;
-    }
-/* } */
     

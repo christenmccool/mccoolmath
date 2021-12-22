@@ -5,9 +5,8 @@ import Skill from '../skill/Skill';
 import NotFound from './NotFound';
 import Error from './Error';
 
-
 /** Routes component for McCool Math app
- * Provides a link to each skill
+ * Links to each skill
  * Redirects to NotFound component if path not found
  */
 const AppRoutes = () => {

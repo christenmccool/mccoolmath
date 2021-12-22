@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ModeForm from './mode/ModeForm';
 import Options from './options/Options';
 import HoldingScreen from './HoldingScreen';
@@ -23,21 +23,11 @@ import './Skill.css';
  * Score and current mode displayed for all modes
  * Display message when goal is completed
  * Renders ModeForm when editing mode
+ * Redirects to Not Found page if not a valid skill
 */
-const GRAPHING_SKILLS = ["lineareqn"];
-
 const Skill = () => {
     const {skill} = useParams();
-    const [searchParams] = useSearchParams();
-
-    //Set problem type option accoreding to query string or default option 
-    let opt = opts[skill].options.find(ele => ele.paramStr === searchParams.toString());
-    if (!opt) {
-        opt = opts[skill].options.find(ele => ele.name === opts[skill].defaultOption);
-    }
-    const [option, setOption] = useState(opt);
-
-    const isGraphing = GRAPHING_SKILLS.includes(skill);
+    const navigate = useNavigate();
 
     const [settings, setSettings] = useState(INITIAL_SETTING_STATE);
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
@@ -53,6 +43,14 @@ const Skill = () => {
     const stopTimer = () => setTimer({...timer, runTimer: false});
     const resetTimer = () => setTimer(INITIAL_TIMER_STATE);
     const resetProblem = () => setProblem(INITIAL_PROB_STATE);
+
+    //Navigate to "Not Found" page if not a valid skill
+    useEffect(() => {
+        if (!opts[skill]) {
+            navigate("/404");
+            return;
+        }
+    }, [skill])
 
     //Set focus to start button before user selects start
     useEffect(() => {
@@ -94,6 +92,11 @@ const Skill = () => {
         return null;
     }
 
+    //Prevent initial render if not a valid skill
+    if (!opts[skill]) {
+        return null;
+    }
+    
     //Render ModeForm if editing mode
     if (settings.editingMode) {
         return (
@@ -115,9 +118,9 @@ const Skill = () => {
         <div className="Skill">
             <div className="Skill-main">
                 <Options 
-                    option={option}
-                    setOption={setOption}
-                    setProblem={setProblem}
+                    resetScore={resetScore}
+                    resetTimer={resetTimer}
+                    resetProblem={resetProblem}
                 />
 
                 {completeMessage() || warningTime() > 0 ?
@@ -128,8 +131,6 @@ const Skill = () => {
 
                 <Problem 
                     visible={!completeMessage() && !warningTime()}
-                    isGraphing={isGraphing}
-                    option={option}
                     problem={problem}
                     setProblem={setProblem}
                     setScore={setScore} 

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Error.css'
 
-//Page to display for invalid URL path
+//Page to display when API call returns an error
 const Error = () => {
     return (
         <div className="Error">

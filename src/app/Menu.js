@@ -5,7 +5,7 @@ import './Menu.css';
 
 /** Menu component for McCool Math app
  * Provides a link to each skill
- * skill name and menu display text stored in opts
+ * Skill names and menu display text stored in opts
  */
 const Menu = () => {
 

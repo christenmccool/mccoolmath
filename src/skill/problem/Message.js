@@ -1,6 +1,5 @@
 import React from 'react';
-// import Expression from './Expression';
-import confetti from '../confetti.gif';
+import confetti from '../../images/confetti.gif';
 import './Message.css'
 
 // Message component displays status (correct or incorrect)

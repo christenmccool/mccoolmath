@@ -1,7 +1,27 @@
-.Expression {
+.Expression-text-xs {
+    font-size: 25px;
+}
+
+.Expression-text-s {
+    font-size: 30px;
+}
+
+.Expression-text-m, .Expression-text-m-fixed {
+    font-size: 40px;
+}
+
+.Expression-text-l {
     font-size: 60px;
 }
 
-.Expression-graphing {
-    font-size: 40px;
+@media (min-width: 1024px) { 
+    .Expression-text-xs {
+        font-size: 40px;
+    }
+    .Expression-text-s {
+        font-size: 50px;
+    }
+    .Expression-text-m, .Expression-text-l {
+        font-size: 60px;
+    }
 }

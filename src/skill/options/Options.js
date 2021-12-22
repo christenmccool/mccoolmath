@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import opts from '../../app/opts';
 import OptionsTab from './OptionsTab';
-import {INITIAL_PROB_STATE} from '../initialValues';
 
 import './Options.css';
 
@@ -10,48 +9,51 @@ import './Options.css';
  * Allows user to select options for skill
  * Maps option to query string
  * Renders series of buttons or dropdown for mobile 
- * Return null if no options for a skill
 */
-const Options = ({ option, setOption, setProblem }) => {
-
+const Options = ( {resetScore, resetTimer, resetProblem} ) => {
     const {skill} = useParams();
     const options = opts[skill].options;
-
+    const [option, setOption] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
 
-    //Set option based on user click of Option Tab
+    //Set initial option based on query string or default
+    useEffect(() => {
+        let opt = opts[skill].options.find(ele => ele.paramStr === searchParams.toString());        
+        if (!opt) {
+            opt = opts[skill].options.find(ele => ele.name === opts[skill].defaultOption);
+            setSearchParams(opt.paramStr);
+        }
+        setOption(opt);
+    }, [])
+
+    //Set option based on user click of Option Tab or selection in dropdown
     //Set query string to reflect selected option
-    //Reset problem
     const handleClick = (evt) => {
-        if (option.name === evt.target.id) return;
-        const opt = options.find(ele => ele.name === evt.target.id);
+        let opt;
+        if (evt.target.nodeName === "BUTTON") {
+            if (option.name === evt.target.id) return;
+            opt = options.find(ele => ele.name === evt.target.id);
+        }
+        if (evt.target.nodeName === "SELECT") {
+            if (option.name === evt.target.value) return;
+            opt = options.find(ele => ele.name === evt.target.value);
+        }
         setOption(opt);
         setSearchParams(opt.paramStr);
-        setProblem(INITIAL_PROB_STATE);
+        resetScore();
+        resetTimer();
+        resetProblem();
     }
 
-    //Set option based on user selection in dropdown
-    //Set query string to reflect selected option
-    //Reset problem
-    const handleChange = (evt) => {
-        if (option.name === evt.target.value) return;
-        const opt = options.find(ele => ele.name === evt.target.value);
-        setOption(opt);
-        setSearchParams(opt.paramStr);
-        setProblem(INITIAL_PROB_STATE);
-    }
-
-    if (!options) return null;
-        
     return (
         <div className="Options">
-            <div className="Options-buttons">
+            <div className="Options-tabs">
                 {options.map(ele => {
                     return (
                         <OptionsTab 
                             key={ele.name} 
                             id={ele.name} 
-                            selected={option&&option.name === ele.name ? true : false}
+                            selected={option.name === ele.name ? true : false}
                             text={ele.text} 
                             handleClick={handleClick} 
                         />
@@ -60,7 +62,7 @@ const Options = ({ option, setOption, setProblem }) => {
             </div>
 
             <div className="Options-dropdown">
-                <select name="option" value={option && option.name} onChange={handleChange} >
+                <select name="option" value={option.name} onChange={handleClick} >
                     {options.map(ele => {
                         return (
                             <option

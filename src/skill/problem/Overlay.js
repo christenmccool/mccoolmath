@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
-import confetti from '../confetti.gif';
+import confetti from '../../images/confetti.gif';
 
 import './Overlay.css';
 

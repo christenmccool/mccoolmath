@@ -8,8 +8,8 @@ import './Graph.css';
 /** Graph component for McCool Math app 
  * Initialize with tables for user points, user line, solution points, and solution line
  * 
- * Plots point when user clicks on grid, removes point on subsequent click
- * Graph type: Automatically connect three points with line
+ * Plots point when user clicks on grid, remove points on subsequent click or reset button click (mobile)
+ * For graph type problem, automatically connect three points with line
 */
 const Graph = ({ calculator, setCalculator, setWarning, problem, checkBtnRef }) => {
     //Maintain user points in state in order to connect with line when 3 points are plotted
@@ -20,7 +20,7 @@ const Graph = ({ calculator, setCalculator, setWarning, problem, checkBtnRef }) 
     //Set up calculator  
     useEffect(() => {
         const calc = Desmos.GraphingCalculator(wrapperRef.current, 
-            {expressions : false, lockViewport : true, settingsMenu: false}
+            {expressions : false, lockViewport : true, settingsMenu: false, trace: false}
         );
 
         calc.setExpression(solutionTableDef);
@@ -124,6 +124,9 @@ const Graph = ({ calculator, setCalculator, setWarning, problem, checkBtnRef }) 
     //Remove from state on subsequent click
     //Triggers useEffect to update Desmos calculator userTable
     const plotPoint = (evt) => {
+
+        if ((problem.args && problem.args.type === "equation") || problem.status !== null) return;
+
         const calculatorRect = calculator.domChangeDetector.elt.getBoundingClientRect();
     
         const pixel_x = evt.clientX - calculatorRect.left;
@@ -151,17 +154,39 @@ const Graph = ({ calculator, setCalculator, setWarning, problem, checkBtnRef }) 
     }
 
     const clearUserPoints = () => {
+        if (problem.status !== null) return;
+
         calculator.setExpression(userTableDef);
         setUserXCoords([]);
         setUserYCoords([]);
     }
 
+    const showPoints = () => {
+        const solutionTable = calculator.getExpressions().find(obj => obj['id'] === 'solutionTable');
+        if (solutionTable.columns[0].values.length === 0) {
+            const solutionXCoords = problem.args.points[0];
+            const solutionYCoords = problem.args.points[1];
+            setTable('solutionTable', solutionXCoords, solutionYCoords);
+            return;
+        }
+        calculator.setExpression(solutionTableDef);
+    }
+
     return (
         <div className="Graph">
             <div className="Graph-calculator" ref={wrapperRef} onClick={plotPoint}></div>
-            <div className="Graph-button">
-                <Button text="Clear" type="reset" handleClick={clearUserPoints} />
-            </div>
+            
+            {!problem.status ? 
+                <div className="Graph-button">
+                    {problem.args && problem.args.type === "graph" ?
+                        <Button text="Clear" type="graph" handleClick={clearUserPoints} />
+                        :
+                        <Button text="Points" type="graph" handleClick={showPoints} />
+                    }
+                </div>
+                : 
+                null
+            }
         </div>
     )
 }

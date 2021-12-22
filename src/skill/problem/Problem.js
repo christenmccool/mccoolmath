@@ -8,6 +8,7 @@ import Overlay from './Overlay';
 import Message from './Message';
 import Warning from './Warning';
 import Button from '../Button';
+import opts from '../../app/opts';
 
 import './Problem.css';
 
@@ -23,31 +24,36 @@ const API_BASE_URL = "https://mccoolmath.herokuapp.com"
  * If visible is false, problem is not displayed
  * This prevents the componet from needing to unmount
 */
-const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore }) => {
+const Problem = ({ visible, problem, setProblem, setScore }) => {
+
     const {skill} = useParams();
     const [searchParams] = useSearchParams();
     const [showOverlay, setShowOverlay] = useState(false);
-    const searchParamsStr = searchParams.toString();
+    const [calculator, setCalculator] = useState(null);
+    const [warning, setWarning] = useState(null);
     let navigate = useNavigate();
 
-    const API_URL = `${API_BASE_URL}/${skill}`;
+    const isGraphing = opts[skill].graphing;
     const hideClass = !visible ? "-hide" : "";
     const componentClass = isGraphing ? `-graphing` : "";
+    const API_URL = `${API_BASE_URL}/${skill}`;
 
-    // const checkBtnRef = useRef();
     const newProbBtnRef = useRef();
     const tryAgainBtnRef = useRef();
     const inputFieldRef = useRef();
     const checkBtnRef = useRef();
 
-    const [calculator, setCalculator] = useState(null);
-    const [warning, setWarning] = useState(null);
-
-    //Get new problem from API if no problem in state
+    //Get new problem from API when problem.args is null or the query string changes
+    //Return if query string isn't valid
     useEffect(() => {
         if (problem.args) return;
+
+        let opt = opts[skill].options.find(ele => ele.paramStr === searchParams.toString());        
+        if (!opt) return;
+
         getProblem();
-    }, [problem.args]);
+    }, [problem.args, searchParams])
+
 
     //Set focus on desired button or input field
     useEffect(() => {
@@ -64,7 +70,6 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
         }
     }, [visible, problem.status, problem.args, showOverlay])
 
-
     //Hide overlay 
     useEffect(() => {
         if (problem.status === null || problem.status === 'showCorrect') {
@@ -75,8 +80,7 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
     //Get new problem from API
     //Resets problem state with data from API call
     const getProblem = () => {
-        const apiParamsStr = option && option.apiParamsStr ? `?${option.apiParamsStr}` : "";
-        const url = `${API_URL}${apiParamsStr}`;
+        const url = `${API_URL}?${searchParams.toString()}`;
 
         axios.get(url)
         .then(resp => {
@@ -87,7 +91,7 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
                 previousUserAnswers: []
             })
         })
-        .catch(err => {
+        .catch(err => {    
             console.log(err);
             navigate("/error");
         });
@@ -157,7 +161,7 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
         setShowOverlay(true);
     }
 
-        //Post request for correct answer to API
+    //Post request for correct answer to API
     //API returns correct answer
     //Incrememnt score attempts by 1
     const getCorrectAnswer = () => {
@@ -180,6 +184,7 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
             console.log(err);
             navigate("/error");
         });
+        setWarning(null);
     }
 
     //Set status and user answer to null when trying again on the same problem
@@ -213,7 +218,9 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
 
             <div className={`Problem-main${hideClass}`}>
                
-                <Expression latex={problem.latex} isGraphing={isGraphing}/>
+                <Expression 
+                    latex={problem.latex} 
+                />
 
                 {isGraphing ? 
                     <div className="Problem-graph">
@@ -240,14 +247,21 @@ const Problem = ({ visible, isGraphing, option, problem, setProblem, setScore })
                 {problem.status === null ?
                     <>
                         {!(isGraphing && problem.latex) ? 
-                            <UserInputField submitUserAnswer={submitUserAnswer} inputFieldRef={inputFieldRef} isGraphing={isGraphing}/> 
+                            <UserInputField 
+                                submitUserAnswer={submitUserAnswer} 
+                                inputFieldRef={inputFieldRef} 
+                                isGraphing={isGraphing}
+                                setWarning={setWarning}
+                            /> 
                             :
                             null   
                         }
                     </>
                     :
                     <>
-                        <Expression latex={answerToDisplay()} isGraphing={isGraphing}/>
+                        <Expression 
+                            latex={answerToDisplay()} 
+                        />
                         {!isGraphing ?
                             <Message problem={problem} />
                         : null}

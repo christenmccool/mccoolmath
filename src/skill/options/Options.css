@@ -15,13 +15,12 @@
     box-shadow: 0 0 10px 5px lightgrey;
 }
 
-.Options-buttons {
+.Options-tabs {
     display: none;
 }
 
-
 @media (min-width: 1024px) {
-    .Options-buttons {    
+    .Options-tabs {    
         width: 99%;
         margin: 0px auto 10px auto;
         display: flex;
