@@ -11,7 +11,7 @@ import ModeWrapper from './mode/ModeWrapper';
 import StartButton from './StartButton';
 
 import opts from '../app/opts';
-import { INITIAL_SETTING_STATE, INITIAL_TIMER_STATE, INITIAL_PROB_STATE, INITIAL_SCORE_STATE } from './initialValues';
+import { INITIAL_TIMER_STATE, INITIAL_OPT_STATE, INITIAL_PROB_STATE, INITIAL_SCORE_STATE, INITIAL_SETTING_STATE } from './initialValues';
 import './Skill.css';
 
 /** Skill component for McCool Math app 
@@ -30,6 +30,7 @@ const Skill = () => {
     const navigate = useNavigate();
 
     const [settings, setSettings] = useState(INITIAL_SETTING_STATE);
+    const [option, setOption] = useState(INITIAL_OPT_STATE);
     const [problem, setProblem] = useState(INITIAL_PROB_STATE);
     const [timer, setTimer] = useState(INITIAL_TIMER_STATE);
     const [score, setScore] = useState(INITIAL_SCORE_STATE);
@@ -118,6 +119,8 @@ const Skill = () => {
         <div className="Skill">
             <div className="Skill-main">
                 <Options 
+                    option={option} 
+                    setOption={setOption} 
                     resetScore={resetScore}
                     resetTimer={resetTimer}
                     resetProblem={resetProblem}
@@ -131,6 +134,7 @@ const Skill = () => {
 
                 <Problem 
                     visible={!completeMessage() && !warningTime()}
+                    option={option} 
                     problem={problem}
                     setProblem={setProblem}
                     setScore={setScore} 

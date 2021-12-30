@@ -5,13 +5,22 @@ const INITIAL_TIMER_STATE = {
     runTimer: false
 };
 
+const INITIAL_OPT_STATE = {
+    name: null, 
+    text: null, 
+    paramStr: null,
+    problemFont: null, 
+    workFont: null, 
+    answerFont: null
+};
+
 const INITIAL_PROB_STATE = {
     latex: null, 
-    problemType: null, 
     args: null,
     userAnswer: null,
     correctAnswer: null, 
     status: null,
+    work: null,
     previousUserAnswers: []
 };
 
@@ -29,4 +38,4 @@ const INITIAL_SETTING_STATE = {
     goalNumProblems: null
 }
 
-export {INITIAL_TIMER_STATE, INITIAL_PROB_STATE, INITIAL_SCORE_STATE, INITIAL_SETTING_STATE};
+export {INITIAL_TIMER_STATE, INITIAL_OPT_STATE, INITIAL_PROB_STATE, INITIAL_SCORE_STATE, INITIAL_SETTING_STATE};

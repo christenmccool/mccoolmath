@@ -10,10 +10,10 @@ import './Options.css';
  * Maps option to query string
  * Renders series of buttons or dropdown for mobile 
 */
-const Options = ( {resetScore, resetTimer, resetProblem} ) => {
+const Options = ( {option, setOption, resetScore, resetTimer, resetProblem} ) => {
     const {skill} = useParams();
     const options = opts[skill].options;
-    const [option, setOption] = useState("");
+    // const [option, setOption] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
 
     //Set initial option based on query string or default

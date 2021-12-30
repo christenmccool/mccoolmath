@@ -1,6 +1,6 @@
 .Problem, .Problem-graphing {
     width: 95%;
-    height: 400px;
+    height: 500px;
     margin: 0px auto;
     padding: 25px 10px;
     display: flex;
@@ -15,7 +15,6 @@
 
 .Problem-graphing {
     padding: 15px 10px;
-    height: 500px;
 }
 
 .Problem-main {

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import ExpressionBlock from './ExpressionBlock';
 import Expression from './Expression';
 import Graph from './graph/Graph';
 import UserInputField from './UserInputField';
@@ -12,8 +13,8 @@ import opts from '../../app/opts';
 
 import './Problem.css';
 
-const API_BASE_URL = "https://mccoolmath.herokuapp.com"
-// const API_BASE_URL = 'http://localhost:3000';
+// const API_BASE_URL = "https://mccoolmath.herokuapp.com"
+const API_BASE_URL = 'http://localhost:3000';
 
 /** Problem component for McCool Math app 
  * Retrieves problem matching skill name and optional query string from McCool Math API 
@@ -24,7 +25,7 @@ const API_BASE_URL = "https://mccoolmath.herokuapp.com"
  * If visible is false, problem is not displayed
  * This prevents the componet from needing to unmount
 */
-const Problem = ({ visible, problem, setProblem, setScore }) => {
+const Problem = ({ visible, option, problem, setProblem, setScore }) => {
 
     const {skill} = useParams();
     const [searchParams] = useSearchParams();
@@ -88,6 +89,7 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
                 userAnswer: null,
                 correctAnswer: null, 
                 status: null,
+                work: null,
                 previousUserAnswers: []
             })
         })
@@ -102,10 +104,9 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
     //Update score based on status
     const submitUserAnswer = (userAnswer) => {
         axios.post(API_URL, {   
-            problemType: problem.problemType,
             args: problem.args,
             answer: userAnswer,
-            returnAnswer: true
+            returnAnswer: 'ifCorrect'        
         })
         .then(resp => {
             setProblem({...problem, 
@@ -139,10 +140,9 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
         const userPoints  = [userTable.columns[0].values, userTable.columns[1].values];
 
         axios.post(API_URL, {   
-            problemType: problem.problemType,
             args: problem.args,
             answer: userPoints,
-            returnAnswer: true
+            returnAnswer: 'ifCorrect'        
         })
         .then(resp => {
             setProblem({...problem, 
@@ -166,16 +166,14 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
     //Incrememnt score attempts by 1
     const getCorrectAnswer = () => {
         axios.post(API_URL, {   
-            problemType: problem.problemType,
             args: problem.args,
             answer: null,
-            returnAnswer: true
+            returnAnswer: 'always'
         })
         .then(resp => {
             setProblem({...problem, 
                 ...resp.data, 
                 userAnswer: null, 
-                status: 'showCorrect'
             });
 
             setScore(score => ({correct: score.correct, attempts: score.attempts + 1}));
@@ -204,6 +202,13 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
         return problem.userAnswer;
     }
 
+    // const latexSize = () => {
+    //     const type = fontSize[skill].options.find(ele => ele.paramStr === searchParams.toString());
+    //     if (!type) return;
+    //     if (!problem.status) return type.problem;
+    //     return type.answer;
+    // }
+
     //Determine button propss based on problem status
     const buttonProps = () => {
         if (!problem.status || problem.status === "incorrect") { 
@@ -217,9 +222,10 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
         <div className={`Problem${componentClass}`}>
 
             <div className={`Problem-main${hideClass}`}>
-               
+
                 <Expression 
                     latex={problem.latex} 
+                    fontSize={option.problemFont}
                 />
 
                 {isGraphing ? 
@@ -259,9 +265,16 @@ const Problem = ({ visible, problem, setProblem, setScore }) => {
                     </>
                     :
                     <>
+                        <ExpressionBlock 
+                            latexArr={problem.work} 
+                            fontSize={option.workFont}
+                            color="grey"
+                        />
                         <Expression 
                             latex={answerToDisplay()} 
+                            fontSize={option.answerFont}
                         />
+
                         {!isGraphing ?
                             <Message problem={problem} />
                         : null}
