@@ -13,8 +13,8 @@ import opts from '../../app/opts';
 
 import './Problem.css';
 
-// const API_BASE_URL = "https://mccoolmath.herokuapp.com"
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = "https://mccoolmath.herokuapp.com"
+// const API_BASE_URL = 'http://localhost:3000';
 
 /** Problem component for McCool Math app 
  * Retrieves problem matching skill name and optional query string from McCool Math API 
@@ -202,12 +202,6 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
         return problem.userAnswer;
     }
 
-    // const latexSize = () => {
-    //     const type = fontSize[skill].options.find(ele => ele.paramStr === searchParams.toString());
-    //     if (!type) return;
-    //     if (!problem.status) return type.problem;
-    //     return type.answer;
-    // }
 
     //Determine button propss based on problem status
     const buttonProps = () => {
@@ -219,13 +213,13 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
     }
 
     return (
-        <div className={`Problem${componentClass}`}>
+        <div className={`Problem${componentClass}`} style={{height: option.styles.height}}>
 
             <div className={`Problem-main${hideClass}`}>
 
                 <Expression 
                     latex={problem.latex} 
-                    fontSize={option.problemFont}
+                    fontSize={option.styles.problemFont}
                 />
 
                 {isGraphing ? 
@@ -267,7 +261,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
                     <>
                         <ExpressionBlock 
                             latexArr={problem.work} 
-                            fontSize={option.workFont}
+                            fontSize={option.styles.workFont}
                             color="grey"
                         />
                         <Expression 

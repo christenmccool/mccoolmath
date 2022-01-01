@@ -9,9 +9,12 @@ const INITIAL_OPT_STATE = {
     name: null, 
     text: null, 
     paramStr: null,
-    problemFont: null, 
-    workFont: null, 
-    answerFont: null
+    styles: {
+        height: null,
+        problemFont: null, 
+        workFont: null, 
+        answerFont: null
+    }
 };
 
 const INITIAL_PROB_STATE = {
