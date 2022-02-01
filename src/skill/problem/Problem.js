@@ -217,10 +217,17 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
 
             <div className={`Problem-main${hideClass}`}>
 
-                <Expression 
-                    latex={problem.latex} 
-                    fontSize={option.styles.problemFont}
-                />
+                {option.name !== 'eqn' && problem.latex === null ?
+                    <Expression 
+                        latex="Loading"
+                        fontSize={option.styles.problemFont}
+                    />
+                    :
+                    <Expression 
+                        latex={problem.latex} 
+                        fontSize={option.styles.problemFont}
+                    />      
+                }
 
                 {isGraphing ? 
                     <div className="Problem-graph">
@@ -246,7 +253,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
 
                 {problem.status === null ?
                     <>
-                        {!(isGraphing && problem.latex) ? 
+                        {option.name !== 'graph' ? 
                             <UserInputField 
                                 submitUserAnswer={submitUserAnswer} 
                                 inputFieldRef={inputFieldRef} 
@@ -266,7 +273,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
                         />
                         <Expression 
                             latex={answerToDisplay()} 
-                            fontSize={option.answerFont}
+                            fontSize={option.styles.answerFont}
                         />
 
                         {!isGraphing ?
@@ -281,7 +288,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
             <div className={`Problem-buttons${hideClass}`}>
                 {problem.status === null ?
                     <>
-                    {!(isGraphing && problem.latex) ?
+                    {option.name !== 'graph' ?
                         <Button text="Check" type="check" formId="check-answer-form" refToAccess={checkBtnRef} />
                         :
                         <Button text="Check" type="check" refToAccess={checkBtnRef} handleClick={submitUserPoints} />
