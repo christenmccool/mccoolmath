@@ -60,7 +60,7 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
     useEffect(() => {
         if (!visible) return;
 
-        if (!problem.status && !(isGraphing && problem.latex)) {
+        if (!problem.status && !(isGraphing && option.name === "graph")) {
             inputFieldRef.current.children[0].children[0].children[0].focus();
         } else if (!problem.status && isGraphing && problem.latex) {
             checkBtnRef.current.focus();
@@ -69,7 +69,22 @@ const Problem = ({ visible, option, problem, setProblem, setScore }) => {
         } else if (problem.status === 'correct' || problem.status === 'showCorrect') {
             newProbBtnRef.current.focus();
         }
-    }, [visible, problem.status, problem.args, showOverlay])
+    }, [visible, option, problem.status, problem.args, showOverlay])
+
+    // //Set focus on desired button or input field
+    // useEffect(() => {
+    //     if (!visible) return;
+
+    //     if (!problem.status && !(isGraphing && problem.latex)) {
+    //         inputFieldRef.current.children[0].children[0].children[0].focus();
+    //     } else if (!problem.status && isGraphing && problem.latex) {
+    //         checkBtnRef.current.focus();
+    //     } else if (problem.status === 'incorrect') {
+    //         tryAgainBtnRef.current.focus();
+    //     } else if (problem.status === 'correct' || problem.status === 'showCorrect') {
+    //         newProbBtnRef.current.focus();
+    //     }
+    // }, [visible, problem.status, problem.args, showOverlay])
 
     //Hide overlay 
     useEffect(() => {
