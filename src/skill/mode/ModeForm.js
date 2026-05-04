@@ -83,43 +83,43 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
         <div className="ModeForm">
             <h1>Select Mode</h1>
             <form className="ModeForm-inputs">
-                <div className="ModeForm-input-group">
+                <label className="ModeForm-input-group" htmlFor="practice">
                     <div>
-                        <input 
-                            type="checkbox" 
-                            id="practice" 
-                            name="mode" 
-                            value="practice" 
-                            onChange={handleFieldChange} 
+                        <input
+                            type="checkbox"
+                            id="practice"
+                            name="mode"
+                            value="practice"
+                            onChange={handleFieldChange}
                             checked={formData.mode==='practice'}
                         />
-                        <label htmlFor="practice">Practice</label>
-                        <div className="ModeForm-description">
-                            No timer
+                        <div>
+                            <span>Practice</span>
+                            <div className="ModeForm-description">No timer</div>
                         </div>
                     </div>
-                </div>
+                </label>
 
-                <div className="ModeForm-input-group">
+                <label className="ModeForm-input-group" htmlFor="numProbGoal">
                     <div>
-                        <input 
-                            type="checkbox" 
-                            id="numProbGoal" 
-                            name="mode" 
-                            value="numProbGoal" 
-                            onChange={handleFieldChange} 
+                        <input
+                            type="checkbox"
+                            id="numProbGoal"
+                            name="mode"
+                            value="numProbGoal"
+                            onChange={handleFieldChange}
                             checked={formData.mode==='numProbGoal'}
                         />
-                        <label htmlFor="numProbGoal">Number of Problems</label>
-                        <div className="ModeForm-description">
-                            As quickly as possible 
+                        <div>
+                            <span>Number of Problems</span>
+                            <div className="ModeForm-description">As quickly as possible</div>
                         </div>
                     </div>
-                    <div>
-                        <select 
-                            name="goalNumProblems" 
-                            value={formData.goalNumProblems} 
-                            onChange={handleFieldChange} 
+                    <div onClick={e => e.stopPropagation()}>
+                        <select
+                            name="goalNumProblems"
+                            value={formData.goalNumProblems}
+                            onChange={handleFieldChange}
                             disabled={formData.mode!=='numProbGoal'}
                         >
                             <option value="10">10</option>
@@ -128,29 +128,28 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                             <option value="100">100</option>
                         </select>
                     </div>
-                </div>
-                
+                </label>
 
-                <div className="ModeForm-input-group">
+                <label className="ModeForm-input-group" htmlFor="countdownGoal">
                     <div>
-                        <input 
-                            type="checkbox" 
-                            id="countdownGoal" 
-                            name="mode" 
-                            value="countdownGoal" 
-                            onChange={handleFieldChange} 
+                        <input
+                            type="checkbox"
+                            id="countdownGoal"
+                            name="mode"
+                            value="countdownGoal"
+                            onChange={handleFieldChange}
                             checked={formData.mode==='countdownGoal'}
                         />
-                        <label htmlFor="countdownGoal">Time</label>
-                        <div className="ModeForm-description">
-                            As many problems as possible 
+                        <div>
+                            <span>Time Limit</span>
+                            <div className="ModeForm-description">As many problems as possible</div>
                         </div>
                     </div>
-                    <div>
-                        <select 
-                            name="timerStartMin" 
+                    <div onClick={e => e.stopPropagation()}>
+                        <select
+                            name="timerStartMin"
                             value={formData.timerStartMin}
-                            onChange={handleFieldChange} 
+                            onChange={handleFieldChange}
                             disabled={formData.mode!=='countdownGoal'}
                         >
                             <option value="0">0</option>
@@ -160,18 +159,18 @@ const ModeForm = ({ settings, setSettings, toggleEditMode, resetScore, resetTime
                             <option value="4">4</option>
                             <option value="5">5</option>
                         </select>
-                        :
-                        <select 
-                            name="timerStartSec" 
+                        {' : '}
+                        <select
+                            name="timerStartSec"
                             value={formData.timerStartSec}
-                            onChange={handleFieldChange} 
+                            onChange={handleFieldChange}
                             disabled={formData.mode!=='countdownGoal'}
                         >
                             <option value="0">00</option>
                             <option value="30">30</option>
                         </select>
                     </div>
-                </div>
+                </label>
                 <div className="ModeForm-warning">
                     {warning}
                 </div>

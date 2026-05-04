@@ -1,6 +1,8 @@
 .Timer {
     width: 80px;
     margin: 0px auto;
-    font-size: 30px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #28737b;
 }
 

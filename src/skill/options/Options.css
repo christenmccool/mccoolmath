@@ -1,18 +1,20 @@
-.Options-dropdown {  
-    display: block;  
+.Options-dropdown {
+    display: block;
     width: 100%;
-    margin: 0px auto 10px auto;
+    margin: 0px auto 12px auto;
 }
 
-.Options-dropdown select {    
+.Options-dropdown select {
     width: 100%;
-    height: 40px;
-    background-color: #FCFCFC;
-    font-size: 30px;
+    height: 44px;
+    font-size: 24px;
     text-align: center;
-    background-color: darkgrey;
-    border-radius: 3px;
-    box-shadow: 0 0 10px 5px lightgrey;
+    background-color: white;
+    border: 1px solid #dde1e7;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: #333;
+    cursor: pointer;
 }
 
 .Options-tabs {
@@ -20,13 +22,16 @@
 }
 
 @media (min-width: 1024px) {
-    .Options-tabs {    
+    .Options-tabs {
         width: 99%;
-        margin: 0px auto 10px auto;
+        margin: 0px auto 12px auto;
         display: flex;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 10px;
+        gap: 0;
+        border: 1px solid #dde1e7;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .Options-dropdown {

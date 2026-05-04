@@ -1,29 +1,33 @@
 .Menu-nav {
-    margin: 40px auto;
-    padding: 40px 10px;
+    margin: 60px auto;
+    padding: 0 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
-    border-radius: 10px;
+    gap: 16px;
+    max-width: 560px;
 }
 
 .Menu-link {
-    width: 80%;
-    max-width: 500px;
-    padding: 10px;
+    width: 100%;
+    padding: 18px 24px;
     cursor: pointer;
-    background-color: #2B7C85;
-    font-size: 32px;
+    background: linear-gradient(135deg, #2B7C85 0%, #1d5c63 100%);
+    font-size: 22px;
+    font-weight: 600;
     color: white;
     text-align: center;
     text-decoration: none;
-    border-radius: 8px;
-    border: 2px solid black;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 14px rgba(43, 124, 133, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    letter-spacing: 0.3px;
 }
 
 .Menu-link:hover, .Menu-link:focus {
-    font-weight: bold;
-    box-shadow: 0 0 0 5px lightgrey;
+    background: linear-gradient(135deg, #33929c 0%, #236970 100%);
+    box-shadow: 0 8px 20px rgba(43, 124, 133, 0.45);
+    outline: none;
 }
 

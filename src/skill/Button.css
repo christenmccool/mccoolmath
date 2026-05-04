@@ -1,41 +1,54 @@
 .Button-btn {
     display: inline-block;
-    padding: 5px 20px;
-    font-size: 30px;
-    border-radius: 8px;
+    padding: 8px 24px;
+    font-size: 28px;
+    border-radius: 10px;
     cursor: pointer;
+    border: none;
+    font-weight: 600;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .Button-btn-check {
-    background-color: #2B7C85;
+    background: linear-gradient(135deg, #2B7C85 0%, #1d5c63 100%);
     color: white;
-    border-radius: 8px;
-    border: 1px solid darkgrey;
-
+    box-shadow: 0 4px 12px rgba(43, 124, 133, 0.35);
 }
 
 .Button-btn-graph {
     padding: 1px 3px;
     font-size: 15px;
     color: black;
+    background: none;
+    box-shadow: none;
+    font-weight: normal;
 }
 
 .Button-btn-other {
-    background-color: white;
-    color: black;
+    background-color: #f0f2f5;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .Button-btn-start {
-    padding: 2px 10px;
-    background-color: #FCFCFC;
-    font-size: 35px;
-    color: #91D34C;
-    border-radius: 5px;
-    border: 1px solid #91D34C;
+    padding: 4px 16px;
+    background: linear-gradient(135deg, #7aba3a 0%, #5e9627 100%);
+    font-size: 32px;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(145, 211, 76, 0.4);
+    font-weight: 700;
 }
-
 
 .Button-btn:hover, .Button-btn:focus {
     cursor: pointer;
-    box-shadow: 0 0 0 3px lightgrey;
+    filter: brightness(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    outline: none;
+}
+
+
+.Button-btn-graph:hover, .Button-btn-graph:focus {
+    transform: none;
+    box-shadow: 0 0 0 2px lightgrey;
 }

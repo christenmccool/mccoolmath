@@ -13,8 +13,7 @@ import opts from '../../app/opts';
 
 import './Problem.css';
 
-const API_BASE_URL = "https://mccoolmath.herokuapp.com"
-// const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = "https://mccoolmath-api.onrender.com"
 
 /** Problem component for McCool Math app 
  * Retrieves problem matching skill name and optional query string from McCool Math API 

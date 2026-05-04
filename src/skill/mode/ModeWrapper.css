@@ -2,12 +2,20 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    gap: 10px;
-    color: grey;
+    gap: 8px;
+    color: #888;
+    font-weight: 500;
+    letter-spacing: 0.3px;
 }
 
 .ModeWrapper-icon {
     display: flex;
     align-items: center;
+    transition: color 0.15s ease;
+    cursor: pointer;
+}
+
+.ModeWrapper-icon:hover {
+    color: #2B7C85;
 }
 

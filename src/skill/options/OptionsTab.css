@@ -1,13 +1,27 @@
 .OptionsTab {
     flex: 1;
-    padding: 2px 10px;
-    background-color: #FCFCFC;
-    font-size: 30px;
-    border: 1px solid lightgrey;
-    border-radius: 3px;
+    padding: 8px 14px;
+    background-color: white;
+    font-size: 26px;
+    font-weight: 500;
+    border: none;
+    border-right: 1px solid #dde1e7;
+    border-radius: 0;
     cursor: pointer;
+    color: #444;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.OptionsTab:last-child {
+    border-right: none;
+}
+
+.OptionsTab:hover {
+    background-color: #f0f2f5;
 }
 
 .OptionsTab-selected {
-    background-color: #91D34C;
+    background: linear-gradient(135deg, #7aba3a 0%, #5e9627 100%);
+    color: white;
+    border-right-color: transparent;
 }
